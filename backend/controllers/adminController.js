@@ -198,6 +198,8 @@ exports.getProduct = asyncHandler(async (req, res, next) => {
  */
 exports.createProduct = asyncHandler(async (req, res, next) => {
   try {
+    console.log('Create Product - Request body:', JSON.stringify(req.body, null, 2));
+    
     // Handle image upload
     if (req.file) {
       const image = await uploadImage(req.file);
@@ -206,6 +208,8 @@ exports.createProduct = asyncHandler(async (req, res, next) => {
     }
 
     const product = await Product.create(req.body);
+    
+    console.log('Created product:', JSON.stringify(product, null, 2));
 
     res.status(201).json({
       success: true,
@@ -225,6 +229,8 @@ exports.updateProduct = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
 
   try {
+    console.log('Update Product - Request body:', JSON.stringify(req.body, null, 2));
+    
     const product = await Product.findById(id);
     if (!product) {
       return next(new ErrorHandler('Product not found', 404));
@@ -247,6 +253,8 @@ exports.updateProduct = asyncHandler(async (req, res, next) => {
       new: true,
       runValidators: true
     });
+    
+    console.log('Updated product:', JSON.stringify(updatedProduct, null, 2));
 
     res.status(200).json({
       success: true,

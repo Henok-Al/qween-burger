@@ -33,6 +33,10 @@ const EditProduct = () => {
         const response = await adminAPI.getProduct(id);
         const product = response.data.data;
         
+        console.log('Fetched product data:', product);
+        console.log('Nutritional Info:', product.nutritionalInfo);
+        console.log('Ingredients:', product.ingredients);
+        
         // Format data for form
         setFormData({
           name: product.name,

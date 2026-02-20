@@ -49,12 +49,6 @@ const AddProduct = () => {
         return;
       }
 
-      // Validate file size (5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        setImageError('Image size must be less than 5MB');
-        return;
-      }
-
       // Create preview
       const reader = new FileReader();
       reader.onloadend = () => {

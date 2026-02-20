@@ -1,12 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { adminAPI } from '../services/api';
 
 const EditProduct = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const fileInputRef = useRef(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [imagePreview, setImagePreview] = useState(null);
   const [errors, setErrors] = useState({});
 
   const [formData, setFormData] = useState({
@@ -45,6 +48,7 @@ const EditProduct = () => {
           carbs: product.nutritionalInfo?.carbs?.toString() || '',
           fat: product.nutritionalInfo?.fat?.toString() || '',
         });
+        setImagePreview(product.image);
       } catch (error) {
         console.error('Error fetching product:', error);
         setErrors({
@@ -79,8 +83,6 @@ const EditProduct = () => {
 
     if (!formData.image.trim()) {
       newErrors.image = 'Product image is required';
-    } else if (!formData.image.startsWith('http')) {
-      newErrors.image = 'Please enter a valid image URL';
     }
 
     if (!formData.stock || parseInt(formData.stock) < 0) {
@@ -123,6 +125,60 @@ const EditProduct = () => {
     }
   };
 
+  const handleImageSelect = (e) => {
+    const file = e.target.files[0];
+    
+    if (file) {
+      // Validate file type
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+      if (!allowedTypes.includes(file.type)) {
+        setErrors(prev => ({ ...prev, image: 'Please select a valid image file (JPEG, PNG, GIF, or WebP)' }));
+        return;
+      }
+
+      // Create preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+
+      // Upload image
+      uploadImage(file);
+    }
+  };
+
+  const uploadImage = async (file) => {
+    setUploadingImage(true);
+    // Clear image error
+    if (errors.image) {
+      setErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors.image;
+        return newErrors;
+      });
+    }
+
+    try {
+      const formDataToSend = new FormData();
+      formDataToSend.append('image', file);
+
+      // Use adminAPI for image upload
+      const response = await adminAPI.uploadProductImage(formDataToSend);
+
+      if (response.data.success) {
+        setFormData(prev => ({ ...prev, image: response.data.data.url }));
+      } else {
+        setErrors(prev => ({ ...prev, image: response.data.message || 'Failed to upload image' }));
+      }
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      setErrors(prev => ({ ...prev, image: error.response?.data?.message || 'Failed to upload image. Please try again.' }));
+    } finally {
+      setUploadingImage(false);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -135,9 +191,13 @@ const EditProduct = () => {
     try {
       // Prepare product data
       const productData = {
-        ...formData,
+        name: formData.name,
+        description: formData.description,
         price: parseFloat(formData.price),
+        category: formData.category,
+        image: formData.image,
         stock: parseInt(formData.stock),
+        isAvailable: formData.isAvailable,
         ingredients: formData.ingredients ? formData.ingredients.split(',').map(i => i.trim()).filter(i => i) : [],
         nutritionalInfo: {
           calories: formData.calories ? parseFloat(formData.calories) : 0,
@@ -307,20 +367,56 @@ const EditProduct = () => {
                   )}
                 </div>
 
+                {/* Image Upload */}
                 <div className="mb-4">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Image URL
+                    Product Image
                   </label>
-                  <input
-                    type="text"
-                    name="image"
-                    value={formData.image}
-                    onChange={handleChange}
-                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent ${
-                      errors.image ? 'border-red-500' : 'border-gray-300'
-                    }`}
-                    placeholder="Enter product image URL"
-                  />
+                  <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-primary transition-colors">
+                    <div className="space-y-2 text-center">
+                      {imagePreview ? (
+                        <div className="relative">
+                          <img
+                            src={imagePreview}
+                            alt="Preview"
+                            className="mx-auto h-32 w-32 object-cover rounded-lg"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setImagePreview(null);
+                              setFormData(prev => ({ ...prev, image: '' }));
+                            }}
+                            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600"
+                          >
+                            <i className="fas fa-times text-xs"></i>
+                          </button>
+                        </div>
+                      ) : (
+                        <i className="fas fa-cloud-upload-alt text-4xl text-gray-400"></i>
+                      )}
+                      <div className="flex text-sm text-gray-600 justify-center">
+                        <label
+                          htmlFor="file-upload"
+                          className="relative cursor-pointer bg-white rounded-md font-medium text-primary hover:text-primary/80"
+                        >
+                          <span>{uploadingImage ? 'Uploading...' : 'Upload a file'}</span>
+                          <input
+                            id="file-upload"
+                            name="file-upload"
+                            type="file"
+                            ref={fileInputRef}
+                            onChange={handleImageSelect}
+                            accept="image/*"
+                            className="sr-only"
+                            disabled={uploadingImage}
+                          />
+                        </label>
+                        <p className="pl-1">or drag and drop</p>
+                      </div>
+                      <p className="text-xs text-gray-500">PNG, JPG, GIF, WebP up to any size</p>
+                    </div>
+                  </div>
                   {errors.image && (
                     <p className="text-red-500 text-sm mt-1">{errors.image}</p>
                   )}
@@ -442,30 +538,23 @@ const EditProduct = () => {
                 </div>
               </div>
 
+              {/* Submit Button */}
               <div className="flex justify-end space-x-4">
                 <button
                   type="button"
                   onClick={() => navigate('/admin/products')}
-                  className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                  className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  disabled={saving}
-                  className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  disabled={saving || uploadingImage}
+                  className={`px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors ${
+                    (saving || uploadingImage) ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
                 >
-                  {saving ? (
-                    <>
-                      <i className="fas fa-spinner fa-spin mr-2"></i>
-                      Saving Changes...
-                    </>
-                  ) : (
-                    <>
-                      <i className="fas fa-save mr-2"></i>
-                      Save Changes
-                    </>
-                  )}
+                  {saving ? 'Saving...' : 'Save Changes'}
                 </button>
               </div>
             </form>

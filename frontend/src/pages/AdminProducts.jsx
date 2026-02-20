@@ -167,11 +167,12 @@ const AdminProducts = () => {
                       <span>{product.isAvailable ? 'Disable' : 'Enable'}</span>
                     </button>
                     <button
-                      onClick={() => handleDeleteProduct(product._id)}
-                      className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
-                    >
-                      <i className="fas fa-trash"></i>
-                    </button>
+                       onClick={() => handleDeleteProduct(product._id)}
+                       className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors flex items-center justify-center space-x-1"
+                     >
+                       <i className="fas fa-trash"></i>
+                       <span>Delete</span>
+                     </button>
                   </div>
                 </div>
               </div>

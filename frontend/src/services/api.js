@@ -111,6 +111,11 @@ export const adminAPI = {
       'Content-Type': 'multipart/form-data',
     },
   }),
+  uploadProductImage: (formData) => api.post('/admin/upload-image', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  }),
 };
 
 export default api;

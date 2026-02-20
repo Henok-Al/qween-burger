@@ -75,27 +75,18 @@ const AddProduct = () => {
       const formDataToSend = new FormData();
       formDataToSend.append('image', file);
 
-      // Use fetch with FormData for file upload
-      const token = localStorage.getItem('token');
-      const response = await fetch('/api/admin/upload-image', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-        body: formDataToSend,
-      });
+      // Use adminAPI for image upload
+      const response = await adminAPI.uploadProductImage(formDataToSend);
 
-      const data = await response.json();
-
-      if (data.success) {
-        setUploadedImageUrl(data.data.url);
+      if (response.data.success) {
+        setUploadedImageUrl(response.data.data.url);
         setImageError('');
       } else {
-        setImageError(data.message || 'Failed to upload image');
+        setImageError(response.data.message || 'Failed to upload image');
       }
     } catch (error) {
       console.error('Error uploading image:', error);
-      setImageError('Failed to upload image. Please try again.');
+      setImageError(error.response?.data?.message || 'Failed to upload image. Please try again.');
     } finally {
       setUploadingImage(false);
     }

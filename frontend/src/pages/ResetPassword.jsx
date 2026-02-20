@@ -1,35 +1,36 @@
 import { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { authAPI } from '../services/api';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { resetPasswordSchema } from '../utils/validators';
 
 const ResetPassword = () => {
   const { token } = useParams();
   const navigate = useNavigate();
   
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(resetPasswordSchema),
+    defaultValues: {
+      password: '',
+      confirmPassword: '',
+    },
+  });
+
+  const onSubmit = async (data) => {
     setError('');
-
-    if (password.length < 6) {
-      setError('Password must be at least 6 characters');
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      setError('Passwords do not match');
-      return;
-    }
-
     setLoading(true);
 
     try {
-      const response = await authAPI.resetPassword(token, password);
+      const response = await authAPI.resetPassword(token, data.password);
       
       // Auto login after password reset
       if (response.data.token) {
@@ -73,7 +74,7 @@ const ResetPassword = () => {
                 </div>
               </div>
             ) : (
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit(onSubmit)}>
                 {error && (
                   <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
                     <p className="text-red-500 text-sm">{error}</p>
@@ -82,30 +83,36 @@ const ResetPassword = () => {
 
                 <div className="mb-4">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    New Password
+                    New Password <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                    {...register('password')}
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent ${
+                      errors.password ? 'border-red-500' : 'border-gray-300'
+                    }`}
                     placeholder="Enter new password"
-                    required
                   />
+                  {errors.password && (
+                    <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+                  )}
                 </div>
 
                 <div className="mb-6">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Confirm Password
+                    Confirm Password <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="password"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                    {...register('confirmPassword')}
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent ${
+                      errors.confirmPassword ? 'border-red-500' : 'border-gray-300'
+                    }`}
                     placeholder="Confirm new password"
-                    required
                   />
+                  {errors.confirmPassword && (
+                    <p className="text-red-500 text-sm mt-1">{errors.confirmPassword.message}</p>
+                  )}
                 </div>
 
                 <button

@@ -1,56 +1,74 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { adminAPI } from '../services/api';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { categorySchema } from '../utils/validators';
 
 const EditCategory = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [formData, setFormData] = useState({
-    name: '',
-    description: '',
-    isActive: true,
-  });
+  const fileInputRef = useRef(null);
   const [loading, setLoading] = useState(false);
+  const [fetchLoading, setFetchLoading] = useState(true);
   const [error, setError] = useState('');
   const [imagePreview, setImagePreview] = useState('');
   const [imageFile, setImageFile] = useState(null);
+  const [uploadingImage, setUploadingImage] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(categorySchema),
+    defaultValues: {
+      name: '',
+      description: '',
+      image: '',
+    },
+  });
 
   useEffect(() => {
     const fetchCategory = async () => {
       try {
-        setLoading(true);
+        setFetchLoading(true);
         const response = await adminAPI.getCategory(id);
         const category = response.data.data;
-        setFormData({
-          name: category.name,
-          description: category.description,
-          isActive: category.isActive,
-        });
+        setValue('name', category.name);
+        setValue('description', category.description || '');
+        setValue('image', category.image || '');
         if (category.image) {
           setImagePreview(category.image);
         }
-      } catch (error) {
-        console.error('Error fetching category:', error);
-        setError(error.response?.data?.message || 'Failed to fetch category');
+      } catch (err) {
+        console.error('Error fetching category:', err);
+        setError(err.response?.data?.message || 'Failed to fetch category');
       } finally {
-        setLoading(false);
+        setFetchLoading(false);
       }
     };
 
     fetchCategory();
-  }, [id]);
+  }, [id, setValue]);
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value,
-    }));
-  };
-
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
+      // Validate file type
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+      if (!allowedTypes.includes(file.type)) {
+        setError('Please select a valid image file (JPEG, PNG, GIF, or WebP)');
+        return;
+      }
+
+      // Validate file size (5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        setError('Image size must be less than 5MB');
+        return;
+      }
+
       setImageFile(file);
       
       // Create preview
@@ -59,36 +77,67 @@ const EditCategory = () => {
         setImagePreview(reader.result);
       };
       reader.readAsDataURL(file);
+
+      // Upload image
+      await uploadImage(file);
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
+  const uploadImage = async (file) => {
+    setUploadingImage(true);
+    setError('');
+
+    try {
+      const formDataToSend = new FormData();
+      formDataToSend.append('image', file);
+
+      const token = localStorage.getItem('token');
+      const response = await fetch('/api/admin/upload-image', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        body: formDataToSend,
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setValue('image', data.data.url);
+      } else {
+        setError(data.message || 'Failed to upload image');
+      }
+    } catch (err) {
+      console.error('Error uploading image:', err);
+      setError('Failed to upload image. Please try again.');
+    } finally {
+      setUploadingImage(false);
+    }
+  };
+
+  const onSubmit = async (data) => {
     try {
       setLoading(true);
       setError('');
 
-      const data = new FormData();
-      data.append('name', formData.name);
-      data.append('description', formData.description);
-      data.append('isActive', formData.isActive);
-      
-      if (imageFile) {
-        data.append('image', imageFile);
-      }
+      const categoryData = {
+        name: data.name,
+        description: data.description,
+        image: data.image || '',
+        isActive: true,
+      };
 
-      await adminAPI.updateCategory(id, data);
+      await adminAPI.updateCategory(id, categoryData);
       navigate('/admin/categories');
-    } catch (error) {
-      console.error('Error updating category:', error);
-      setError(error.response?.data?.message || 'Failed to update category');
+    } catch (err) {
+      console.error('Error updating category:', err);
+      setError(err.response?.data?.message || 'Failed to update category. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
-  if (loading && !formData.name) {
+  if (fetchLoading) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-primary"></div>
@@ -110,7 +159,7 @@ const EditCategory = () => {
       </div>
 
       <div className="bg-white rounded-lg shadow-md p-6">
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {error && (
             <div className="bg-red-50 border border-red-200 rounded-lg p-4">
               <div className="flex">
@@ -135,13 +184,15 @@ const EditCategory = () => {
               <input
                 type="text"
                 id="name"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
+                {...register('name')}
                 placeholder="Enter category name"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                required
+                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent ${
+                  errors.name ? 'border-red-500' : 'border-gray-300'
+                }`}
               />
+              {errors.name && (
+                <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+              )}
             </div>
 
             <div className="md:col-span-2">
@@ -150,35 +201,53 @@ const EditCategory = () => {
               </label>
               <textarea
                 id="description"
-                name="description"
-                value={formData.description}
-                onChange={handleChange}
+                {...register('description')}
                 placeholder="Enter category description"
                 rows="4"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent ${
+                  errors.description ? 'border-red-500' : 'border-gray-300'
+                }`}
               />
+              {errors.description && (
+                <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>
+              )}
             </div>
 
             <div>
               <label htmlFor="image" className="block text-sm font-medium text-gray-700 mb-1">
                 Image
               </label>
-              <div className="mt-1 flex items-center">
+              <div className="mt-1">
                 <input
                   type="file"
                   id="image"
                   accept="image/*"
+                  ref={fileInputRef}
                   onChange={handleImageChange}
                   className="hidden"
                 />
-                <label
-                  htmlFor="image"
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
                   className="cursor-pointer bg-white border border-gray-300 rounded-lg py-2 px-4 flex items-center space-x-2 hover:bg-gray-50 transition-colors"
+                  disabled={uploadingImage}
                 >
-                  <i className="fas fa-upload"></i>
-                  <span>Choose File</span>
-                </label>
-                {imageFile && (
+                  {uploadingImage ? (
+                    <>
+                      <svg className="animate-spin h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      <span>Uploading...</span>
+                    </>
+                  ) : (
+                    <>
+                      <i className="fas fa-upload"></i>
+                      <span>Choose File</span>
+                    </>
+                  )}
+                </button>
+                {imageFile && !uploadingImage && (
                   <span className="ml-2 text-sm text-gray-600">
                     {imageFile.name}
                   </span>
@@ -194,19 +263,6 @@ const EditCategory = () => {
                 </div>
               )}
             </div>
-
-            <div>
-              <label className="flex items-center">
-                <input
-                  type="checkbox"
-                  name="isActive"
-                  checked={formData.isActive}
-                  onChange={handleChange}
-                  className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
-                />
-                <span className="ml-2 text-sm text-gray-700">Active</span>
-              </label>
-            </div>
           </div>
 
           <div className="flex justify-end space-x-4">
@@ -218,7 +274,7 @@ const EditCategory = () => {
             </Link>
             <button
               type="submit"
-              disabled={loading}
+              disabled={loading || uploadingImage}
               className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center space-x-2"
             >
               {loading ? (

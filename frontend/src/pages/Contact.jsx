@@ -1,41 +1,38 @@
 import { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { contactSchema } from '../utils/validators';
 
 const Contact = () => {
   const { t } = useLanguage();
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    subject: '',
-    message: '',
-  });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(contactSchema),
+    defaultValues: {
+      name: '',
+      email: '',
+      phone: '',
+      subject: '',
+      message: '',
+    },
+  });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const onSubmit = async () => {
     setIsSubmitting(true);
     
     // Simulate form submission
     setTimeout(() => {
       setSubmitStatus('success');
       setIsSubmitting(false);
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        subject: '',
-        message: '',
-      });
+      reset();
     }, 1500);
   };
 
@@ -149,7 +146,7 @@ const Contact = () => {
                 </div>
               )}
 
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
@@ -158,13 +155,15 @@ const Contact = () => {
                     <input
                       type="text"
                       id="name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 bg-gray-50/50"
+                      {...register('name')}
+                      className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 bg-gray-50/50 ${
+                        errors.name ? 'border-red-500' : 'border-gray-200'
+                      }`}
                       placeholder={t('enterName') || 'John Doe'}
                     />
+                    {errors.name && (
+                      <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+                    )}
                   </div>
                   <div>
                     <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
@@ -173,13 +172,15 @@ const Contact = () => {
                     <input
                       type="email"
                       id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 bg-gray-50/50"
+                      {...register('email')}
+                      className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 bg-gray-50/50 ${
+                        errors.email ? 'border-red-500' : 'border-gray-200'
+                      }`}
                       placeholder={t('enterEmail') || 'john@example.com'}
                     />
+                    {errors.email && (
+                      <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+                    )}
                   </div>
                 </div>
 
@@ -191,12 +192,15 @@ const Contact = () => {
                     <input
                       type="tel"
                       id="phone"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 bg-gray-50/50"
+                      {...register('phone')}
+                      className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 bg-gray-50/50 ${
+                        errors.phone ? 'border-red-500' : 'border-gray-200'
+                      }`}
                       placeholder={t('enterPhone') || '+251 9XX XXX XXX'}
                     />
+                    {errors.phone && (
+                      <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>
+                    )}
                   </div>
                   <div>
                     <label htmlFor="subject" className="block text-sm font-semibold text-gray-700 mb-2">
@@ -204,11 +208,10 @@ const Contact = () => {
                     </label>
                     <select
                       id="subject"
-                      name="subject"
-                      value={formData.subject}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 bg-gray-50/50"
+                      {...register('subject')}
+                      className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 bg-gray-50/50 ${
+                        errors.subject ? 'border-red-500' : 'border-gray-200'
+                      }`}
                     >
                       <option value="">{t('selectSubject') || 'Select a subject'}</option>
                       <option value="general">{t('generalInquiry') || 'General Inquiry'}</option>
@@ -217,6 +220,9 @@ const Contact = () => {
                       <option value="complaint">{t('complaint') || 'Complaint'}</option>
                       <option value="partnership">{t('partnership') || 'Partnership'}</option>
                     </select>
+                    {errors.subject && (
+                      <p className="text-red-500 text-sm mt-1">{errors.subject.message}</p>
+                    )}
                   </div>
                 </div>
 
@@ -226,14 +232,16 @@ const Contact = () => {
                   </label>
                   <textarea
                     id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    required
+                    {...register('message')}
                     rows={5}
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 resize-none bg-gray-50/50"
+                    className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 resize-none bg-gray-50/50 ${
+                      errors.message ? 'border-red-500' : 'border-gray-200'
+                    }`}
                     placeholder={t('enterMessage') || 'How can we help you?'}
                   />
+                  {errors.message && (
+                    <p className="text-red-500 text-sm mt-1">{errors.message.message}</p>
+                  )}
                 </div>
 
                 <button

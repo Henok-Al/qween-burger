@@ -11,12 +11,14 @@ const AddProduct = () => {
   const [loading, setLoading] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
+  const [imageError, setImageError] = useState('');
+  const [submitError, setSubmitError] = useState('');
 
   const {
     register,
     handleSubmit,
     setValue,
-    getValues,
+    clearErrors,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(productSchema),
@@ -38,15 +40,19 @@ const AddProduct = () => {
 
   const handleImageSelect = (e) => {
     const file = e.target.files[0];
+    setImageError('');
+    
     if (file) {
       // Validate file type
       const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
       if (!allowedTypes.includes(file.type)) {
+        setImageError('Please select a valid image file (JPEG, PNG, GIF, or WebP)');
         return;
       }
 
       // Validate file size (5MB)
       if (file.size > 5 * 1024 * 1024) {
+        setImageError('Image size must be less than 5MB');
         return;
       }
 
@@ -64,6 +70,7 @@ const AddProduct = () => {
 
   const uploadImage = async (file) => {
     setUploadingImage(true);
+    setImageError('');
 
     try {
       const formDataToSend = new FormData();
@@ -82,17 +89,14 @@ const AddProduct = () => {
       const data = await response.json();
 
       if (data.success) {
-        console.log('Image uploaded successfully:', data.data.url); // Debug: Log image URL
         setValue('image', data.data.url);
-        
-        // Debug: Check if value is actually set
-        setTimeout(() => {
-          const formState = getValues();
-          console.log('Form state after image upload:', formState);
-        }, 100);
+        clearErrors('image');
+      } else {
+        setImageError(data.message || 'Failed to upload image');
       }
     } catch (error) {
       console.error('Error uploading image:', error);
+      setImageError('Failed to upload image. Please try again.');
     } finally {
       setUploadingImage(false);
     }
@@ -100,15 +104,21 @@ const AddProduct = () => {
 
   const onSubmit = async (data) => {
     setLoading(true);
+    setSubmitError('');
+
+    // Check if image is uploaded
+    if (!data.image) {
+      setImageError('Product image is required');
+      setLoading(false);
+      return;
+    }
 
     try {
-      console.log('Form data received:', data); // Debug: Log the form data
-      
       // Prepare product data
       const productData = {
         ...data,
         price: parseFloat(data.price),
-        stock: parseInt(data.stock),
+        stock: parseInt(data.stock) || 0,
         ingredients: data.ingredients ? data.ingredients.split(',').map(i => i.trim()).filter(i => i) : [],
         nutritionalInfo: {
           calories: data.calories ? parseFloat(data.calories) : 0,
@@ -118,14 +128,13 @@ const AddProduct = () => {
         },
       };
 
-      console.log('Product data to send:', productData); // Debug: Log the product data
-      
       await adminAPI.createProduct(productData);
       
       // Product created successfully, navigate to products list
       navigate('/admin/products');
     } catch (error) {
       console.error('Error creating product:', error);
+      setSubmitError(error.response?.data?.message || 'Failed to create product. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -154,6 +163,22 @@ const AddProduct = () => {
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="p-6 space-y-8">
+            {/* Submit Error */}
+            {submitError && (
+              <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                <div className="flex">
+                  <div className="flex-shrink-0">
+                    <svg className="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <div className="ml-3">
+                    <p className="text-sm text-red-700">{submitError}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Product Information */}
             <div>
               <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
@@ -267,10 +292,10 @@ const AddProduct = () => {
                     Product Image <span className="text-red-500">*</span>
                   </label>
                   <div
-                    onClick={() => fileInputRef.current?.click()}
+                    onClick={() => !uploadingImage && fileInputRef.current?.click()}
                     className={`relative border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition-all ${
-                      errors.image ? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-orange-500 hover:bg-orange-50'
-                    }`}
+                      errors.image || imageError ? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-orange-500 hover:bg-orange-50'
+                    } ${uploadingImage ? 'cursor-not-allowed opacity-50' : ''}`}
                   >
                     <input
                       type="file"
@@ -307,8 +332,8 @@ const AddProduct = () => {
                       </div>
                     )}
                   </div>
-                  {errors.image && (
-                    <p className="text-red-500 text-sm mt-1">{errors.image.message}</p>
+                  {(errors.image || imageError) && (
+                    <p className="text-red-500 text-sm mt-1">{imageError || errors.image?.message}</p>
                   )}
                 </div>
               </div>

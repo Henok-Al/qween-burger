@@ -13,12 +13,11 @@ const AddProduct = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [imageError, setImageError] = useState('');
   const [submitError, setSubmitError] = useState('');
+  const [uploadedImageUrl, setUploadedImageUrl] = useState('');
 
   const {
     register,
     handleSubmit,
-    setValue,
-    clearErrors,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(productSchema),
@@ -89,8 +88,8 @@ const AddProduct = () => {
       const data = await response.json();
 
       if (data.success) {
-        setValue('image', data.data.url);
-        clearErrors('image');
+        setUploadedImageUrl(data.data.url);
+        setImageError('');
       } else {
         setImageError(data.message || 'Failed to upload image');
       }
@@ -107,7 +106,7 @@ const AddProduct = () => {
     setSubmitError('');
 
     // Check if image is uploaded
-    if (!data.image || typeof data.image !== 'string' || data.image.trim() === '') {
+    if (!uploadedImageUrl || uploadedImageUrl.trim() === '') {
       setImageError('Product image is required');
       setLoading(false);
       return;
@@ -120,7 +119,7 @@ const AddProduct = () => {
         description: data.description,
         price: parseFloat(data.price),
         category: data.category,
-        image: data.image,
+        image: uploadedImageUrl,
         stock: parseInt(data.stock) || 0,
         isAvailable: data.isAvailable,
         ingredients: data.ingredients ? data.ingredients.split(',').map(i => i.trim()).filter(i => i) : [],

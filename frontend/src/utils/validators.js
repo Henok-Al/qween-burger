@@ -38,9 +38,7 @@ export const productSchema = z.object({
   stock: z.string()
     .refine(val => !val || (!isNaN(parseInt(val)) && parseInt(val) >= 0), 'Stock must be a non-negative number').optional(),
   isAvailable: z.boolean().optional().default(true),
-  image: z.string()
-    .min(1, 'Product image is required')
-    .refine(val => val.startsWith('http') || val.startsWith('data:image'), 'Please upload a valid product image')
+  image: z.string().optional()
 });
 
 // Login validation schema

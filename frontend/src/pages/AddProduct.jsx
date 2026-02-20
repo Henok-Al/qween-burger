@@ -107,7 +107,7 @@ const AddProduct = () => {
     setSubmitError('');
 
     // Check if image is uploaded
-    if (!data.image) {
+    if (!data.image || typeof data.image !== 'string' || data.image.trim() === '') {
       setImageError('Product image is required');
       setLoading(false);
       return;
@@ -116,9 +116,13 @@ const AddProduct = () => {
     try {
       // Prepare product data
       const productData = {
-        ...data,
+        name: data.name,
+        description: data.description,
         price: parseFloat(data.price),
+        category: data.category,
+        image: data.image,
         stock: parseInt(data.stock) || 0,
+        isAvailable: data.isAvailable,
         ingredients: data.ingredients ? data.ingredients.split(',').map(i => i.trim()).filter(i => i) : [],
         nutritionalInfo: {
           calories: data.calories ? parseFloat(data.calories) : 0,
@@ -127,6 +131,8 @@ const AddProduct = () => {
           fat: data.fat ? parseFloat(data.fat) : 0,
         },
       };
+
+      console.log('Product data to send:', productData);
 
       await adminAPI.createProduct(productData);
       

@@ -97,10 +97,14 @@ const AddCategory = () => {
 
       const categoryData = {
         name: data.name,
-        description: data.description,
-        image: data.image || '',
+        description: data.description || '',
         isActive: true,
       };
+
+      // Only include image if it's a valid string URL
+      if (data.image && typeof data.image === 'string' && data.image.trim() !== '') {
+        categoryData.image = data.image;
+      }
 
       await adminAPI.createCategory(categoryData);
       navigate('/admin/categories');

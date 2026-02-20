@@ -15,8 +15,8 @@ const SET_ERROR = 'SET_ERROR';
 const initialState = {
   user: null,
   token: localStorage.getItem('token'),
-  isAuthenticated: !!localStorage.getItem('token'),
-  isLoading: false,
+  isAuthenticated: false,
+  isLoading: true, // Start with loading true to check auth state
   error: null,
 };
 
@@ -109,7 +109,11 @@ export const AuthProvider = ({ children }) => {
         // Clear invalid data
         localStorage.removeItem('token');
         localStorage.removeItem('user');
+        dispatch({ type: SET_LOADING, payload: false });
       }
+    } else {
+      // No token found, stop loading
+      dispatch({ type: SET_LOADING, payload: false });
     }
   }, []);
 

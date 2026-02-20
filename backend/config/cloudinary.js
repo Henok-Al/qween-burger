@@ -11,21 +11,32 @@ cloudinary.config({
 // Upload Image to Cloudinary
 const uploadImage = async (file) => {
   try {
-    console.log('Cloudinary Upload - File received:', file);
+    console.log('Cloudinary Upload - File received:', {
+      fieldname: file.fieldname,
+      originalname: file.originalname,
+      mimetype: file.mimetype,
+      size: file.size,
+      hasBuffer: !!file.buffer,
+      hasPath: !!file.path
+    });
     
-    // Check if file has path, tempFilePath, or buffer
     let uploadSource;
-    if (file.path) {
+    
+    // Prefer buffer (from memoryStorage) for production environments
+    if (file.buffer) {
+      // Convert buffer to data URI for Cloudinary
+      const base64 = file.buffer.toString('base64');
+      const dataURI = `data:${file.mimetype};base64,${base64}`;
+      uploadSource = dataURI;
+      console.log('Using buffer data URI');
+    } else if (file.path) {
       uploadSource = file.path;
       console.log('Using file path:', uploadSource);
     } else if (file.tempFilePath) {
       uploadSource = file.tempFilePath;
       console.log('Using temp file path:', uploadSource);
-    } else if (file.buffer) {
-      uploadSource = file.buffer.toString('base64');
-      console.log('Using buffer data');
     } else {
-      throw new Error('File must have path, tempFilePath, or buffer');
+      throw new Error('File must have buffer, path, or tempFilePath');
     }
 
     const result = await cloudinary.uploader.upload(uploadSource, {
@@ -43,7 +54,7 @@ const uploadImage = async (file) => {
     };
   } catch (error) {
     console.error('Cloudinary Upload Error:', error);
-    throw new Error('Image upload failed');
+    throw new Error('Image upload failed: ' + error.message);
   }
 };
 

@@ -110,11 +110,13 @@ export const adminAPI = {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
+    timeout: 60000, // 60 seconds for image uploads
   }),
   uploadProductImage: (formData) => api.post('/admin/upload-image', formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
+    timeout: 60000, // 60 seconds for image uploads
   }),
 };
 

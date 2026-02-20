@@ -421,11 +421,27 @@ exports.getTopProducts = asyncHandler(async (req, res, next) => {
  */
 exports.uploadProductImage = asyncHandler(async (req, res, next) => {
   try {
+    console.log('Upload Product Image - Request received');
+    console.log('Request file:', req.file);
+    console.log('Request headers:', req.headers['content-type']);
+    
     if (!req.file) {
+      console.log('No file in request');
       return next(new ErrorHandler('Please upload an image file', 400));
     }
 
+    console.log('Calling uploadImage with file:', {
+      fieldname: req.file.fieldname,
+      originalname: req.file.originalname,
+      mimetype: req.file.mimetype,
+      size: req.file.size,
+      hasBuffer: !!req.file.buffer,
+      hasPath: !!req.file.path
+    });
+
     const image = await uploadImage(req.file);
+
+    console.log('Image uploaded successfully:', image);
 
     res.status(200).json({
       success: true,
@@ -435,6 +451,7 @@ exports.uploadProductImage = asyncHandler(async (req, res, next) => {
       }
     });
   } catch (error) {
+    console.error('Upload Product Image Error:', error);
     return next(new ErrorHandler(error.message, 400));
   }
 });

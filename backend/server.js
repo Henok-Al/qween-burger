@@ -74,10 +74,10 @@ app.use('/api/', limiter);
 app.use(compression());
 
 // Parse JSON request bodies
-app.use(express.json({ limit: '10kb' })); // Limit body size
+app.use(express.json({ limit: '50mb' })); // Increased limit for image uploads
 
 // Parse URL-encoded request bodies (for form data)
-app.use(express.urlencoded({ extended: true, limit: '10kb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 // Data sanitization against NoSQL query injection
 app.use(mongoSanitize());

@@ -1,8 +1,18 @@
 import axios from 'axios';
 
+// Determine the base URL based on environment
+const getBaseURL = () => {
+  // If VITE_API_URL is set, use it (production)
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL;
+  }
+  // In development, use relative path (proxy will handle it)
+  return '/api';
+};
+
 // Create an instance of Axios
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || '/api',
+  baseURL: getBaseURL(),
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',

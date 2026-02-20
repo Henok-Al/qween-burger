@@ -44,7 +44,13 @@ app.use(helmet({
 // Enable CORS - allows frontend to communicate with backend
 app.use(
   cors({
-    origin: ['http://localhost:5173', 'http://localhost:3000', 'http://localhost:3002', process.env.FRONTEND_URL].filter(Boolean),
+    origin: [
+      'http://localhost:5173', 
+      'http://localhost:3000', 
+      'http://localhost:3002', 
+      'https://qween-burger.vercel.app',
+      process.env.FRONTEND_URL
+    ].filter(Boolean),
     credentials: true, // Allow cookies/authorization headers
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     allowedHeaders: ['Content-Type', 'Authorization'],
@@ -143,7 +149,13 @@ if (process.env.NODE_ENV !== 'test') {
 // Initialize Socket.io
 const io = require('socket.io')(server, {
   cors: {
-    origin: ['http://localhost:5173', 'http://localhost:3000', 'http://localhost:3002', process.env.FRONTEND_URL].filter(Boolean),
+    origin: [
+      'http://localhost:5173', 
+      'http://localhost:3000', 
+      'http://localhost:3002', 
+      'https://qween-burger.vercel.app',
+      process.env.FRONTEND_URL
+    ].filter(Boolean),
     credentials: true,
   },
 });

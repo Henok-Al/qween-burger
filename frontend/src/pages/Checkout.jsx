@@ -317,17 +317,6 @@ const Checkout = () => {
                       <input
                         type="radio"
                         name="paymentMethod"
-                        value="card"
-                        checked={formData.paymentMethod === 'card'}
-                        onChange={handleChange}
-                        className="mr-2"
-                      />
-                      <span>Credit/Debit Card</span>
-                    </label>
-                    <label className="flex items-center">
-                      <input
-                        type="radio"
-                        name="paymentMethod"
                         value="online"
                         checked={formData.paymentMethod === 'online'}
                         onChange={handleChange}

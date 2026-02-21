@@ -94,9 +94,9 @@ const Cart = () => {
                             <button
                               onClick={() => handleQuantityChange(item.product._id, item.quantity - 1)}
                               disabled={item.quantity <= 1}
-                              className="w-8 h-8 flex items-center justify-center border border-gray-300 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors"
+                              className="w-10 h-10 flex items-center justify-center bg-primary text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary/90 transition-colors font-bold text-lg"
                             >
-                              <i className="fas fa-minus"></i>
+                              −
                             </button>
                             <input
                               type="number"
@@ -106,18 +106,18 @@ const Cart = () => {
                               }
                               min="1"
                               max="10"
-                              className="w-16 px-2 py-1 text-center border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                              className="w-16 px-2 py-2 text-center border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-lg font-semibold"
                             />
                             <button
                               onClick={() => handleQuantityChange(item.product._id, item.quantity + 1)}
                               disabled={item.quantity >= 10}
-                              className="w-8 h-8 flex items-center justify-center border border-gray-300 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors"
+                              className="w-10 h-10 flex items-center justify-center bg-primary text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary/90 transition-colors font-bold text-lg"
                             >
-                              <i className="fas fa-plus"></i>
+                              +
                             </button>
                           </div>
 
-                          <div className="ml-auto font-semibold">
+                          <div className="ml-auto font-semibold text-lg">
                             ${(item.product.price * item.quantity).toFixed(2)}
                           </div>
                         </div>

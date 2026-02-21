@@ -207,6 +207,16 @@ exports.createProduct = asyncHandler(async (req, res, next) => {
       req.body.imagePublicId = image.public_id;
     }
 
+    // Ensure nutritionalInfo is properly structured
+    if (req.body.nutritionalInfo) {
+      req.body.nutritionalInfo = {
+        calories: parseFloat(req.body.nutritionalInfo.calories) || 0,
+        protein: parseFloat(req.body.nutritionalInfo.protein) || 0,
+        carbs: parseFloat(req.body.nutritionalInfo.carbs) || 0,
+        fat: parseFloat(req.body.nutritionalInfo.fat) || 0,
+      };
+    }
+
     const product = await Product.create(req.body);
     
     console.log('Created product:', JSON.stringify(product, null, 2));
@@ -247,6 +257,16 @@ exports.updateProduct = asyncHandler(async (req, res, next) => {
       const image = await uploadImage(req.file);
       req.body.image = image.url;
       req.body.imagePublicId = image.public_id;
+    }
+
+    // Ensure nutritionalInfo is properly structured
+    if (req.body.nutritionalInfo) {
+      req.body.nutritionalInfo = {
+        calories: parseFloat(req.body.nutritionalInfo.calories) || 0,
+        protein: parseFloat(req.body.nutritionalInfo.protein) || 0,
+        carbs: parseFloat(req.body.nutritionalInfo.carbs) || 0,
+        fat: parseFloat(req.body.nutritionalInfo.fat) || 0,
+      };
     }
 
     const updatedProduct = await Product.findByIdAndUpdate(id, req.body, {

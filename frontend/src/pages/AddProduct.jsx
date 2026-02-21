@@ -4,6 +4,7 @@ import { adminAPI } from '../services/api';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { productSchema } from '../utils/validators';
+import { toast, ToastContainer } from 'react-toastify';
 
 const AddProduct = () => {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ const AddProduct = () => {
   const [imageError, setImageError] = useState('');
   const [submitError, setSubmitError] = useState('');
   const [uploadedImageUrl, setUploadedImageUrl] = useState('');
+  const [dragActive, setDragActive] = useState(false);
 
   const {
     register,
@@ -29,6 +31,7 @@ const AddProduct = () => {
       image: '',
       stock: '',
       isAvailable: true,
+      isFeatured: false,
       ingredients: '',
       calories: '',
       protein: '',
@@ -46,6 +49,45 @@ const AddProduct = () => {
       const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
       if (!allowedTypes.includes(file.type)) {
         setImageError('Please select a valid image file (JPEG, PNG, GIF, or WebP)');
+        toast.error('Please select a valid image file (JPEG, PNG, GIF, or WebP)');
+        return;
+      }
+
+      // Create preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+
+      // Upload image
+      uploadImage(file);
+    }
+  };
+
+  // Drag and drop handlers
+  const handleDrag = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === 'dragenter' || e.type === 'dragover') {
+      setDragActive(true);
+    } else if (e.type === 'dragleave') {
+      setDragActive(false);
+    }
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+    
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      const file = e.dataTransfer.files[0];
+      // Validate file type
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+      if (!allowedTypes.includes(file.type)) {
+        setImageError('Please select a valid image file (JPEG, PNG, GIF, or WebP)');
+        toast.error('Please select a valid image file (JPEG, PNG, GIF, or WebP)');
         return;
       }
 
@@ -75,12 +117,15 @@ const AddProduct = () => {
       if (response.data.success) {
         setUploadedImageUrl(response.data.data.url);
         setImageError('');
+        toast.success('Image uploaded successfully!');
       } else {
         setImageError(response.data.message || 'Failed to upload image');
+        toast.error(response.data.message || 'Failed to upload image');
       }
     } catch (error) {
       console.error('Error uploading image:', error);
       setImageError(error.response?.data?.message || 'Failed to upload image. Please try again.');
+      toast.error(error.response?.data?.message || 'Failed to upload image. Please try again.');
     } finally {
       setUploadingImage(false);
     }
@@ -93,6 +138,7 @@ const AddProduct = () => {
     // Check if image is uploaded
     if (!uploadedImageUrl || uploadedImageUrl.trim() === '') {
       setImageError('Product image is required');
+      toast.error('Product image is required');
       setLoading(false);
       return;
     }
@@ -107,6 +153,7 @@ const AddProduct = () => {
         image: uploadedImageUrl,
         stock: parseInt(data.stock) || 0,
         isAvailable: data.isAvailable,
+        isFeatured: data.isFeatured || false,
         ingredients: data.ingredients ? data.ingredients.split(',').map(i => i.trim()).filter(i => i) : [],
         nutritionalInfo: {
           calories: data.calories ? parseFloat(data.calories) : 0,
@@ -119,12 +166,16 @@ const AddProduct = () => {
       console.log('Product data to send:', productData);
 
       await adminAPI.createProduct(productData);
+      toast.success('Product created successfully!');
       
       // Product created successfully, navigate to products list
-      navigate('/admin/products');
+      setTimeout(() => {
+        navigate('/admin/products');
+      }, 1500);
     } catch (error) {
       console.error('Error creating product:', error);
       setSubmitError(error.response?.data?.message || 'Failed to create product. Please try again.');
+      toast.error(error.response?.data?.message || 'Failed to create product. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -283,7 +334,13 @@ const AddProduct = () => {
                   </label>
                   <div
                     onClick={() => !uploadingImage && fileInputRef.current?.click()}
+                    onDragEnter={handleDrag}
+                    onDragLeave={handleDrag}
+                    onDragOver={handleDrag}
+                    onDrop={handleDrop}
                     className={`relative border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition-all ${
+                      dragActive ? 'border-orange-500 bg-orange-50' : ''
+                    } ${
                       errors.image || imageError ? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-orange-500 hover:bg-orange-50'
                     } ${uploadingImage ? 'cursor-not-allowed opacity-50' : ''}`}
                   >
@@ -316,7 +373,7 @@ const AddProduct = () => {
                           </svg>
                         </div>
                         <p className="text-gray-600 font-medium">
-                          {uploadingImage ? 'Uploading...' : 'Click to upload image'}
+                          {uploadingImage ? 'Uploading...' : 'Click or drag and drop to upload image'}
                         </p>
                         <p className="text-gray-400 text-sm mt-1">PNG, JPG, GIF, WebP up to 5MB</p>
                       </div>
@@ -429,15 +486,28 @@ const AddProduct = () => {
 
             {/* Product Availability */}
             <div>
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  {...register('isAvailable')}
-                  className="w-4 h-4 text-orange-600 rounded focus:ring-orange-500"
-                />
-                <label className="ml-2 text-sm font-medium text-gray-700">
-                  Product is available for purchase
-                </label>
+              <div className="flex items-center space-x-6">
+                <div className="flex items-center">
+                  <input
+                    type="checkbox"
+                    {...register('isAvailable')}
+                    className="w-4 h-4 text-orange-600 rounded focus:ring-orange-500"
+                  />
+                  <label className="ml-2 text-sm font-medium text-gray-700">
+                    Product is available for purchase
+                  </label>
+                </div>
+                <div className="flex items-center">
+                  <input
+                    type="checkbox"
+                    {...register('isFeatured')}
+                    className="w-4 h-4 text-yellow-500 rounded focus:ring-yellow-500"
+                  />
+                  <label className="ml-2 text-sm font-medium text-gray-700 flex items-center">
+                    <i className="fas fa-star text-yellow-500 mr-1"></i>
+                    Mark as Featured Product
+                  </label>
+                </div>
               </div>
             </div>
           </div>
@@ -461,6 +531,7 @@ const AddProduct = () => {
           </div>
         </form>
       </div>
+      <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );
 };

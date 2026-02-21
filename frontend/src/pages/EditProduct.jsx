@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { adminAPI } from '../services/api';
+import { toast, ToastContainer } from 'react-toastify';
 
 const EditProduct = () => {
   const { id } = useParams();
@@ -11,6 +12,7 @@ const EditProduct = () => {
   const [uploadingImage, setUploadingImage] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
   const [errors, setErrors] = useState({});
+  const [dragActive, setDragActive] = useState(false);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -20,6 +22,7 @@ const EditProduct = () => {
     image: '',
     stock: '',
     isAvailable: true,
+    isFeatured: false,
     ingredients: '',
     calories: '',
     protein: '',
@@ -46,6 +49,7 @@ const EditProduct = () => {
           image: product.image,
           stock: product.stock.toString(),
           isAvailable: product.isAvailable,
+          isFeatured: product.isFeatured || false,
           ingredients: product.ingredients ? product.ingredients.join(', ') : '',
           calories: product.nutritionalInfo?.calories?.toString() || '',
           protein: product.nutritionalInfo?.protein?.toString() || '',
@@ -137,6 +141,45 @@ const EditProduct = () => {
       const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
       if (!allowedTypes.includes(file.type)) {
         setErrors(prev => ({ ...prev, image: 'Please select a valid image file (JPEG, PNG, GIF, or WebP)' }));
+        toast.error('Please select a valid image file (JPEG, PNG, GIF, or WebP)');
+        return;
+      }
+
+      // Create preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+
+      // Upload image
+      uploadImage(file);
+    }
+  };
+
+  // Drag and drop handlers
+  const handleDrag = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === 'dragenter' || e.type === 'dragover') {
+      setDragActive(true);
+    } else if (e.type === 'dragleave') {
+      setDragActive(false);
+    }
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+    
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      const file = e.dataTransfer.files[0];
+      // Validate file type
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+      if (!allowedTypes.includes(file.type)) {
+        setErrors(prev => ({ ...prev, image: 'Please select a valid image file (JPEG, PNG, GIF, or WebP)' }));
+        toast.error('Please select a valid image file (JPEG, PNG, GIF, or WebP)');
         return;
       }
 
@@ -172,12 +215,15 @@ const EditProduct = () => {
 
       if (response.data.success) {
         setFormData(prev => ({ ...prev, image: response.data.data.url }));
+        toast.success('Image uploaded successfully!');
       } else {
         setErrors(prev => ({ ...prev, image: response.data.message || 'Failed to upload image' }));
+        toast.error(response.data.message || 'Failed to upload image');
       }
     } catch (error) {
       console.error('Error uploading image:', error);
       setErrors(prev => ({ ...prev, image: error.response?.data?.message || 'Failed to upload image. Please try again.' }));
+      toast.error(error.response?.data?.message || 'Failed to upload image. Please try again.');
     } finally {
       setUploadingImage(false);
     }
@@ -187,6 +233,7 @@ const EditProduct = () => {
     e.preventDefault();
 
     if (!validateForm()) {
+      toast.error('Please fix the errors in the form');
       return;
     }
 
@@ -202,6 +249,7 @@ const EditProduct = () => {
         image: formData.image,
         stock: parseInt(formData.stock),
         isAvailable: formData.isAvailable,
+        isFeatured: formData.isFeatured || false,
         ingredients: formData.ingredients ? formData.ingredients.split(',').map(i => i.trim()).filter(i => i) : [],
         nutritionalInfo: {
           calories: formData.calories ? parseFloat(formData.calories) : 0,
@@ -212,14 +260,18 @@ const EditProduct = () => {
       };
 
       await adminAPI.updateProduct(id, productData);
+      toast.success('Product updated successfully!');
       
       // Product updated successfully, navigate to products list
-      navigate('/admin/products');
+      setTimeout(() => {
+        navigate('/admin/products');
+      }, 1500);
     } catch (error) {
       console.error('Error updating product:', error);
       setErrors({
         submit: error.response?.data?.message || 'Failed to update product. Please try again.',
       });
+      toast.error(error.response?.data?.message || 'Failed to update product. Please try again.');
     } finally {
       setSaving(false);
     }
@@ -376,7 +428,15 @@ const EditProduct = () => {
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Product Image
                   </label>
-                  <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-primary transition-colors">
+                  <div 
+                    className={`mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-dashed rounded-lg transition-colors ${
+                      dragActive ? 'border-primary bg-primary/5' : 'border-gray-300 hover:border-primary'
+                    }`}
+                    onDragEnter={handleDrag}
+                    onDragLeave={handleDrag}
+                    onDragOver={handleDrag}
+                    onDrop={handleDrop}
+                  >
                     <div className="space-y-2 text-center">
                       {imagePreview ? (
                         <div className="relative">
@@ -426,17 +486,32 @@ const EditProduct = () => {
                   )}
                 </div>
 
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    name="isAvailable"
-                    checked={formData.isAvailable}
-                    onChange={handleChange}
-                    className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
-                  />
-                  <label htmlFor="isAvailable" className="ml-2 block text-sm text-gray-700">
-                    Product is available
-                  </label>
+                <div className="flex items-center space-x-6">
+                  <div className="flex items-center">
+                    <input
+                      type="checkbox"
+                      name="isAvailable"
+                      checked={formData.isAvailable}
+                      onChange={handleChange}
+                      className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
+                    />
+                    <label htmlFor="isAvailable" className="ml-2 block text-sm text-gray-700">
+                      Product is available
+                    </label>
+                  </div>
+                  <div className="flex items-center">
+                    <input
+                      type="checkbox"
+                      name="isFeatured"
+                      checked={formData.isFeatured}
+                      onChange={handleChange}
+                      className="h-4 w-4 text-yellow-500 focus:ring-yellow-500 border-gray-300 rounded"
+                    />
+                    <label htmlFor="isFeatured" className="ml-2 block text-sm text-gray-700 flex items-center">
+                      <i className="fas fa-star text-yellow-500 mr-1"></i>
+                      Featured Product
+                    </label>
+                  </div>
                 </div>
               </div>
 
@@ -565,6 +640,7 @@ const EditProduct = () => {
           </div>
         </div>
       </div>
+      <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );
 };

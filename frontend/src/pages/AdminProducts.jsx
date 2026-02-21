@@ -2,24 +2,38 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { adminAPI } from '../services/api';
 import CustomModal from '../components/CustomModal';
+import { toast, ToastContainer } from 'react-toastify';
 
 const AdminProducts = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [deleteModal, setDeleteModal] = useState({ isOpen: false, productId: null });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalProducts, setTotalProducts] = useState(0);
+  const productsPerPage = 9;
 
   useEffect(() => {
     fetchProducts();
-  }, [searchTerm]);
+  }, [searchTerm, currentPage]);
 
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const response = await adminAPI.getProducts({ search: searchTerm });
+      const response = await adminAPI.getProducts({ 
+        search: searchTerm,
+        page: currentPage,
+        limit: productsPerPage
+      });
       setProducts(response.data.data);
+      if (response.data.pagination) {
+        setTotalPages(response.data.pagination.pages);
+        setTotalProducts(response.data.pagination.total);
+      }
     } catch (error) {
       console.error('Error fetching products:', error);
+      toast.error('Failed to fetch products');
     } finally {
       setLoading(false);
     }
@@ -32,18 +46,33 @@ const AdminProducts = () => {
   const confirmDeleteProduct = async () => {
     try {
       await adminAPI.deleteProduct(deleteModal.productId);
+      toast.success('Product deleted successfully!');
       fetchProducts(); // Refresh products after deletion
     } catch (error) {
       console.error('Error deleting product:', error);
+      toast.error(error.response?.data?.message || 'Failed to delete product');
     }
   };
 
   const handleProductStatus = async (id, currentStatus) => {
     try {
       await adminAPI.updateProduct(id, { isAvailable: !currentStatus });
+      toast.success(`Product ${!currentStatus ? 'enabled' : 'disabled'} successfully!`);
       fetchProducts(); // Refresh products after status change
     } catch (error) {
       console.error('Error updating product status:', error);
+      toast.error('Failed to update product status');
+    }
+  };
+
+  const handleFeaturedStatus = async (id, currentStatus) => {
+    try {
+      await adminAPI.updateProduct(id, { isFeatured: !currentStatus });
+      toast.success(`Product ${!currentStatus ? 'marked as featured' : 'removed from featured'} successfully!`);
+      fetchProducts(); // Refresh products after status change
+    } catch (error) {
+      console.error('Error updating featured status:', error);
+      toast.error('Failed to update featured status');
     }
   };
 
@@ -112,7 +141,12 @@ const AdminProducts = () => {
                       e.target.src = 'https://via.placeholder.com/400x300?text=Product+Image';
                     }}
                   />
-                  <div className="absolute top-4 right-4">
+                  <div className="absolute top-4 right-4 flex flex-col gap-2">
+                    {product.isFeatured && (
+                      <span className="px-3 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800 flex items-center gap-1">
+                        <i className="fas fa-star"></i> Featured
+                      </span>
+                    )}
                     <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
                       product.isAvailable
                         ? 'bg-green-100 text-green-800'
@@ -147,7 +181,7 @@ const AdminProducts = () => {
                     </div>
                   </div>
                   
-                  <div className="flex space-x-2">
+                  <div className="flex flex-wrap gap-2">
                     <Link
                       to={`/admin/products/${product._id}`}
                       className="flex-1 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors flex items-center justify-center space-x-1"
@@ -155,6 +189,18 @@ const AdminProducts = () => {
                       <i className="fas fa-edit"></i>
                       <span>Edit</span>
                     </Link>
+                    <button
+                      onClick={() => handleFeaturedStatus(product._id, product.isFeatured)}
+                      className={`px-4 py-2 rounded-lg transition-colors flex items-center justify-center space-x-1 ${
+                        product.isFeatured
+                          ? 'bg-yellow-500 text-white hover:bg-yellow-600'
+                          : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                      }`}
+                      title={product.isFeatured ? 'Remove from Featured' : 'Mark as Featured'}
+                    >
+                      <i className="fas fa-star"></i>
+                      <span>{product.isFeatured ? 'Unfeature' : 'Feature'}</span>
+                    </button>
                     <button
                       onClick={() => handleProductStatus(product._id, product.isAvailable)}
                       className={`px-4 py-2 rounded-lg transition-colors flex items-center justify-center space-x-1 ${
@@ -179,6 +225,56 @@ const AdminProducts = () => {
             ))}
           </div>
         )}
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="flex justify-center items-center mt-8 space-x-2">
+            <button
+              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className={`px-4 py-2 rounded-lg transition-colors ${
+                currentPage === 1
+                  ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                  : 'bg-primary text-white hover:bg-primary/90'
+              }`}
+            >
+              <i className="fas fa-chevron-left"></i>
+            </button>
+            
+            {[...Array(totalPages)].map((_, index) => (
+              <button
+                key={index + 1}
+                onClick={() => setCurrentPage(index + 1)}
+                className={`px-4 py-2 rounded-lg transition-colors ${
+                  currentPage === index + 1
+                    ? 'bg-primary text-white'
+                    : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-300'
+                }`}
+              >
+                {index + 1}
+              </button>
+            ))}
+            
+            <button
+              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+              disabled={currentPage === totalPages}
+              className={`px-4 py-2 rounded-lg transition-colors ${
+                currentPage === totalPages
+                  ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                  : 'bg-primary text-white hover:bg-primary/90'
+              }`}
+            >
+              <i className="fas fa-chevron-right"></i>
+            </button>
+          </div>
+        )}
+
+        {/* Products count */}
+        {totalProducts > 0 && (
+          <div className="text-center mt-4 text-gray-600">
+            Showing {products.length} of {totalProducts} products
+          </div>
+        )}
       </div>
 
       {/* Delete Confirmation Modal */}
@@ -191,6 +287,7 @@ const AdminProducts = () => {
         confirmText="Delete"
         cancelText="Cancel"
       />
+      <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );
 };

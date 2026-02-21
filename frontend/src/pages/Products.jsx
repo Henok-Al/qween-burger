@@ -248,8 +248,16 @@ const Products = () => {
           {/* Products grid */}
           <div className="lg:col-span-3">
             {loading ? (
-              <div className="flex justify-center items-center py-12">
-                <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-primary"></div>
+              <div className="flex flex-col justify-center items-center py-12">
+                <div className="relative">
+                  <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-primary"></div>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <i className="fas fa-burger text-primary text-xl"></i>
+                  </div>
+                </div>
+                <p className="mt-4 text-gray-600 animate-pulse">
+                  {language === 'en' ? 'Loading delicious burgers...' : 'ጣፋጭ በርገሮችን በመጫን ላይ...'}
+                </p>
               </div>
              ) : products.length === 0 ? (
               <div className="text-center py-12">

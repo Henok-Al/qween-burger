@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer, useEffect } from 'react';
+import React, { createContext, useContext, useReducer, useEffect } from 'react';
 
 // Action types
 const ADD_TO_CART = 'ADD_TO_CART';

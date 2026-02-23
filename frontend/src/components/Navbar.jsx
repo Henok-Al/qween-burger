@@ -35,11 +35,9 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2" onClick={closeMobileMenu}>
-            <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center">
-              <span className="text-xl">🍔</span>
-            </div>
+            <img src="/logo.png" alt="Queen Burger Logo" className="w-10 h-10 object-contain rounded-xl" />
             <span className="text-xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
-              Qween Burger
+              Queen Burger
             </span>
           </Link>
 
@@ -47,41 +45,37 @@ const Navbar = () => {
           <div className="hidden md:flex items-center space-x-1">
             <Link
               to="/"
-              className={`px-4 py-2 rounded-lg transition-all duration-200 font-medium ${
-                isActive('/') 
-                  ? 'text-primary bg-orange-50' 
-                  : 'text-gray-600 hover:text-orange-600 hover:bg-orange-50'
-              }`}
+              className={`px-4 py-2 rounded-lg transition-all duration-200 font-medium ${isActive('/')
+                ? 'text-primary bg-orange-50'
+                : 'text-gray-600 hover:text-orange-600 hover:bg-orange-50'
+                }`}
             >
               {t('navbar.home')}
             </Link>
             <Link
               to="/products"
-              className={`px-4 py-2 rounded-lg transition-all duration-200 font-medium ${
-                isActive('/products') 
-                  ? 'text-primary bg-orange-50' 
-                  : 'text-gray-600 hover:text-orange-600 hover:bg-orange-50'
-              }`}
+              className={`px-4 py-2 rounded-lg transition-all duration-200 font-medium ${isActive('/products')
+                ? 'text-primary bg-orange-50'
+                : 'text-gray-600 hover:text-orange-600 hover:bg-orange-50'
+                }`}
             >
               {t('navbar.products')}
             </Link>
             <Link
               to="/contact"
-              className={`px-4 py-2 rounded-lg transition-all duration-200 font-medium ${
-                isActive('/contact') 
-                  ? 'text-primary bg-orange-50' 
-                  : 'text-gray-600 hover:text-orange-600 hover:bg-orange-50'
-              }`}
+              className={`px-4 py-2 rounded-lg transition-all duration-200 font-medium ${isActive('/contact')
+                ? 'text-primary bg-orange-50'
+                : 'text-gray-600 hover:text-orange-600 hover:bg-orange-50'
+                }`}
             >
               {language === 'en' ? 'Contact' : language === 'om' ? 'Nu Quunnamaa' : 'እኛን ያግኙ'}
             </Link>
             <Link
               to="/cart"
-              className={`px-4 py-2 rounded-lg transition-all duration-200 font-medium relative ${
-                isActive('/cart') 
-                  ? 'text-primary bg-orange-50' 
-                  : 'text-gray-600 hover:text-orange-600 hover:bg-orange-50'
-              }`}
+              className={`px-4 py-2 rounded-lg transition-all duration-200 font-medium relative ${isActive('/cart')
+                ? 'text-primary bg-orange-50'
+                : 'text-gray-600 hover:text-orange-600 hover:bg-orange-50'
+                }`}
             >
               <div className="flex items-center space-x-1">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -115,7 +109,7 @@ const Navbar = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
-              
+
               {isLangDropdownOpen && (
                 <div className="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-lg border border-gray-100 py-1 z-50">
                   <button
@@ -154,6 +148,19 @@ const Navbar = () => {
                     <span>{language === 'en' ? 'Admin' : language === 'om' ? 'Bulchaa' : 'አዳሚን'}</span>
                   </Link>
                 )}
+
+                {/* Orders Link */}
+                <Link
+                  to="/orders"
+                  className="flex items-center space-x-2 px-3 py-1.5 rounded-lg hover:bg-gray-50 transition-all duration-200"
+                >
+                  <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                  </svg>
+                  <span className="text-sm font-medium text-gray-700">
+                    {t('navbar.orders')}
+                  </span>
+                </Link>
 
                 {/* User Profile */}
                 <Link
@@ -241,11 +248,10 @@ const Navbar = () => {
             <Link
               to="/"
               onClick={closeMobileMenu}
-              className={`flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 ${
-                isActive('/') 
-                  ? 'bg-orange-50 text-primary font-medium' 
-                  : 'text-gray-600 hover:bg-gray-50'
-              }`}
+              className={`flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 ${isActive('/')
+                ? 'bg-orange-50 text-primary font-medium'
+                : 'text-gray-600 hover:bg-gray-50'
+                }`}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
@@ -255,11 +261,10 @@ const Navbar = () => {
             <Link
               to="/products"
               onClick={closeMobileMenu}
-              className={`flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 ${
-                isActive('/products') 
-                  ? 'bg-orange-50 text-primary font-medium' 
-                  : 'text-gray-600 hover:bg-gray-50'
-              }`}
+              className={`flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 ${isActive('/products')
+                ? 'bg-orange-50 text-primary font-medium'
+                : 'text-gray-600 hover:bg-gray-50'
+                }`}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
@@ -269,11 +274,10 @@ const Navbar = () => {
             <Link
               to="/contact"
               onClick={closeMobileMenu}
-              className={`flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 ${
-                isActive('/contact') 
-                  ? 'bg-orange-50 text-primary font-medium' 
-                  : 'text-gray-600 hover:bg-gray-50'
-              }`}
+              className={`flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 ${isActive('/contact')
+                ? 'bg-orange-50 text-primary font-medium'
+                : 'text-gray-600 hover:bg-gray-50'
+                }`}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -283,11 +287,10 @@ const Navbar = () => {
             <Link
               to="/cart"
               onClick={closeMobileMenu}
-              className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-200 ${
-                isActive('/cart') 
-                  ? 'bg-orange-50 text-primary font-medium' 
-                  : 'text-gray-600 hover:bg-gray-50'
-              }`}
+              className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-200 ${isActive('/cart')
+                ? 'bg-orange-50 text-primary font-medium'
+                : 'text-gray-600 hover:bg-gray-50'
+                }`}
             >
               <div className="flex items-center space-x-3">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -314,31 +317,28 @@ const Navbar = () => {
             <div className="flex flex-wrap gap-2 px-4">
               <button
                 onClick={() => handleLanguageChange('en')}
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
-                  language === 'en' 
-                    ? 'bg-orange-500 text-white' 
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${language === 'en'
+                  ? 'bg-orange-500 text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
               >
                 English
               </button>
               <button
                 onClick={() => handleLanguageChange('am')}
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
-                  language === 'am' 
-                    ? 'bg-orange-500 text-white' 
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${language === 'am'
+                  ? 'bg-orange-500 text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
               >
                 አማርኛ
               </button>
               <button
                 onClick={() => handleLanguageChange('om')}
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
-                  language === 'om' 
-                    ? 'bg-orange-500 text-white' 
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${language === 'om'
+                  ? 'bg-orange-500 text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
               >
                 Afaan Oromoo
               </button>
@@ -374,6 +374,18 @@ const Navbar = () => {
                   <span>{language === 'en' ? 'Admin Panel' : language === 'om' ? 'Paaneelii Bulchaa' : 'የአዳሚን ፓነል'}</span>
                 </Link>
               )}
+
+              {/* Orders Link */}
+              <Link
+                to="/orders"
+                onClick={closeMobileMenu}
+                className="flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 transition-all duration-200"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                </svg>
+                <span>{t('navbar.orders')}</span>
+              </Link>
 
               {/* Profile Link */}
               <Link

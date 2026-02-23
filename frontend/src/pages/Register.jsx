@@ -16,7 +16,7 @@ const Register = () => {
   const translations = {
     en: {
       title: 'Create an Account',
-      subtitle: 'Join Qween Burger and enjoy delicious burgers!',
+      subtitle: 'Join Queen Burger and enjoy delicious burgers!',
       fullName: 'Full Name',
       fullNamePlaceholder: 'Enter your full name',
       email: 'Email Address',
@@ -39,7 +39,7 @@ const Register = () => {
     },
     am: {
       title: 'መለያ ይፍጠሩ',
-      subtitle: 'Qween Burger ይቀላቀሉ እና ጣፋጭ በርገሮችን ያጡ!',
+      subtitle: 'Queen Burger ይቀላቀሉ እና ጣፋጭ በርገሮችን ያጡ!',
       fullName: 'ሙሉ ስም',
       fullNamePlaceholder: 'ሙሉ ስምዎን ያስገቡ',
       email: 'ኢሜል አድራሻ',
@@ -62,7 +62,7 @@ const Register = () => {
     },
     om: {
       title: 'Miira Uumaa',
-      subtitle: 'Qween Burgeritti makamoo fi burgeerota mi\'aa ta\'an qabaa!',
+      subtitle: 'Queen Burgeritti makamoo fi burgeerota mi\'aa ta\'an qabaa!',
       fullName: 'Maqaa Guutuu',
       fullNamePlaceholder: 'Maqaa keessan guutuu galchaa',
       email: 'Imeeilii',
@@ -120,7 +120,7 @@ const Register = () => {
     setGoogleLoading(true);
     const result = await googleLogin();
     setGoogleLoading(false);
-    
+
     if (result.success) {
       navigate('/');
     }
@@ -131,8 +131,8 @@ const Register = () => {
       <div className="container mx-auto px-4">
         <div className="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden">
           <div className="px-6 py-8">
-            <div className="text-center mb-8">
-              <div className="text-5xl mb-4">🍔</div>
+            <div className="text-center mb-8 flex flex-col items-center">
+              <img src="/logo.png" alt="Queen Burger Logo" className="w-16 h-16 object-contain mb-4" />
               <h1 className="text-2xl font-bold text-gray-900">{t.title}</h1>
               <p className="text-gray-600 mt-2">{t.subtitle}</p>
             </div>
@@ -151,9 +151,8 @@ const Register = () => {
                 <input
                   type="text"
                   {...register('name')}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent ${
-                    errors.name ? 'border-red-500' : 'border-gray-300'
-                  }`}
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent ${errors.name ? 'border-red-500' : 'border-gray-300'
+                    }`}
                   placeholder={t.fullNamePlaceholder}
                   required
                 />
@@ -169,9 +168,8 @@ const Register = () => {
                 <input
                   type="email"
                   {...register('email')}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent ${
-                    errors.email ? 'border-red-500' : 'border-gray-300'
-                  }`}
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent ${errors.email ? 'border-red-500' : 'border-gray-300'
+                    }`}
                   placeholder={t.emailPlaceholder}
                   required
                 />
@@ -187,9 +185,8 @@ const Register = () => {
                 <input
                   type="tel"
                   {...register('phone')}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent ${
-                    errors.phone ? 'border-red-500' : 'border-gray-300'
-                  }`}
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent ${errors.phone ? 'border-red-500' : 'border-gray-300'
+                    }`}
                   placeholder={t.phonePlaceholder}
                   required
                 />
@@ -205,9 +202,8 @@ const Register = () => {
                 <textarea
                   {...register('address')}
                   rows="3"
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent ${
-                    errors.address ? 'border-red-500' : 'border-gray-300'
-                  }`}
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent ${errors.address ? 'border-red-500' : 'border-gray-300'
+                    }`}
                   placeholder={t.addressPlaceholder}
                   required
                 />
@@ -223,9 +219,8 @@ const Register = () => {
                 <input
                   type="password"
                   {...register('password')}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent ${
-                    errors.password ? 'border-red-500' : 'border-gray-300'
-                  }`}
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent ${errors.password ? 'border-red-500' : 'border-gray-300'
+                    }`}
                   placeholder={t.passwordPlaceholder}
                   required
                 />
@@ -241,9 +236,8 @@ const Register = () => {
                 <input
                   type="password"
                   {...register('confirmPassword')}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent ${
-                    errors.confirmPassword ? 'border-red-500' : 'border-gray-300'
-                  }`}
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent ${errors.confirmPassword ? 'border-red-500' : 'border-gray-300'
+                    }`}
                   placeholder={t.confirmPasswordPlaceholder}
                   required
                 />

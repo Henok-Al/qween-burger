@@ -14,7 +14,7 @@ const Orders = () => {
 
   const handleReorder = async (order) => {
     setReorderingId(order._id);
-    
+
     try {
       reorder(order);
       navigate('/cart');
@@ -27,11 +27,11 @@ const Orders = () => {
 
   const handlePayNow = async (order) => {
     setPayingId(order._id);
-    
+
     try {
       const response = await paymentAPI.initializeChapaPayment(order._id);
       const paymentUrl = response.data?.data?.paymentUrl;
-      
+
       if (paymentUrl) {
         window.location.href = paymentUrl;
       } else {
@@ -223,10 +223,10 @@ const Orders = () => {
                       {order.items.map((item, index) => (
                         <div key={index} className="flex justify-between text-sm">
                           <span>
-                            {item.product.name} x{item.quantity}
+                            {item.product?.name || 'Deleted Product'} x{item.quantity}
                           </span>
                           <span className="font-medium">
-                            ${(item.product.price * item.quantity).toFixed(2)}
+                            ${((item.product?.price || 0) * item.quantity).toFixed(2)}
                           </span>
                         </div>
                       ))}

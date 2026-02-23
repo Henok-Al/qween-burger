@@ -73,11 +73,9 @@ const AdminSidebar = () => {
       {/* Mobile Top Bar */}
       <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-white border-b border-gray-200 z-50 flex items-center justify-between px-4">
         <div className="flex items-center space-x-3">
-          <div className="w-9 h-9 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg flex items-center justify-center shadow-sm">
-            <span className="text-lg">🍔</span>
-          </div>
+          <img src="/logo.png" alt="Queen Burger Logo" className="w-9 h-9 object-contain rounded-lg shadow-sm" />
           <div>
-            <h1 className="text-base font-bold text-gray-900">Qween Burger</h1>
+            <h1 className="text-base font-bold text-gray-900">Queen Burger</h1>
             <p className="text-[10px] text-gray-400 uppercase tracking-wider font-medium">Admin Panel</p>
           </div>
         </div>
@@ -100,25 +98,22 @@ const AdminSidebar = () => {
 
       {/* Mobile Overlay */}
       {isMobileMenuOpen && (
-        <div 
+        <div
           className="lg:hidden fixed inset-0 bg-black/50 z-40"
           onClick={closeMobileMenu}
         ></div>
       )}
 
       {/* Sidebar */}
-      <aside className={`fixed left-0 top-0 h-screen w-64 bg-white border-r border-gray-200 z-50 flex flex-col transform transition-transform duration-300 ease-in-out ${
-        isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
-      }`}>
+      <aside className={`fixed left-0 top-0 h-screen w-64 bg-white border-r border-gray-200 z-50 flex flex-col transform transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+        }`}>
         {/* Logo Section */}
         <div className="p-5 border-b border-gray-100">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <div className="w-9 h-9 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg flex items-center justify-center shadow-sm">
-                <span className="text-lg">🍔</span>
-              </div>
+              <img src="/logo.png" alt="Queen Burger Logo" className="w-9 h-9 object-contain rounded-lg shadow-sm" />
               <div>
-                <h1 className="text-base font-bold text-gray-900">Qween Burger</h1>
+                <h1 className="text-base font-bold text-gray-900">Queen Burger</h1>
                 <p className="text-[10px] text-gray-400 uppercase tracking-wider font-medium">Admin Panel</p>
               </div>
             </div>
@@ -161,10 +156,9 @@ const AdminSidebar = () => {
               end={item.path === '/admin'}
               onClick={closeMobileMenu}
               className={({ isActive }) =>
-                `flex items-center space-x-3 px-3 py-2.5 rounded-lg transition-all duration-150 group ${
-                  isActive
-                    ? 'bg-orange-50 text-orange-600'
-                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                `flex items-center space-x-3 px-3 py-2.5 rounded-lg transition-all duration-150 group ${isActive
+                  ? 'bg-orange-50 text-orange-600'
+                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                 }`
               }
             >

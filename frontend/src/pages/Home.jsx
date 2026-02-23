@@ -41,7 +41,7 @@ const Home = () => {
       readyToOrder: 'Ready to Order?',
       readyToOrderDesc: 'Order now and get your delicious burger delivered in 30 minutes or less!',
       browseMenu: 'Browse Menu',
-      happyCustomers: '5K+ Happy Customers'
+      happyCustomers: 'Countless Happy Customers'
     },
     am: {
       bestBurgers: 'በከተማው ውስጥ ምርጥ በርገሮች',
@@ -73,7 +73,7 @@ const Home = () => {
       readyToOrder: 'ለማዘዝ ዝግጁ ነዎት?',
       readyToOrderDesc: 'አሁን ያዘዙ እና ጣፋጭ በርገርዎን በ30 ደቂቃ ውስጥ ያግኙ!',
       browseMenu: 'ምናሌን ይመልከቱ',
-      happyCustomers: '5K+ ደስተኛ ደንበኞች'
+      happyCustomers: 'ብዙ ደስተኛ ደንበኞች'
     },
     om: {
       bestBurgers: 'Burgeeroota Gaariin Magaalaa Keessatti',
@@ -105,7 +105,7 @@ const Home = () => {
       readyToOrder: 'Ajajuuf Qophii?',
       readyToOrderDesc: 'Amaj ajajaa fi burjeelcha keessan daqiiqaa 30 keessatti argadhu!',
       browseMenu: 'Meenyuu Ilaalaa',
-      happyCustomers: '5K+ Fayyadamtoota Gamagamoo'
+      happyCustomers: 'Fayyadamtoota Gamagamoo Hedduu'
     }
   };
 
@@ -138,7 +138,7 @@ const Home = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <div className="text-center lg:text-left order-2 lg:order-1">
               <div className="inline-flex items-center px-4 py-2 bg-primary/10 rounded-full text-primary text-sm font-medium mb-4">
-                <span className="mr-2">🍔</span>
+                <img src="/logo.png" alt="Queen Burger Logo icon" className="w-5 h-5 object-contain mr-2" />
                 {t.bestBurgers}
               </div>
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 leading-tight">

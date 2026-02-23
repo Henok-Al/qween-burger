@@ -16,7 +16,7 @@ const Login = () => {
   // Translations for all three languages
   const translations = {
     en: {
-      title: 'Login to Qween Burger',
+      title: 'Login to Queen Burger',
       welcomeBack: 'Welcome back! Please login to your account.',
       email: 'Email Address',
       emailPlaceholder: 'Enter your email address',
@@ -33,7 +33,7 @@ const Login = () => {
       registerHere: 'Register here'
     },
     am: {
-      title: 'ወደ Qween Burger ይግቡ',
+      title: 'ወደ Queen Burger ይግቡ',
       welcomeBack: 'እንኳን ተመልሰው መጡ! እባክዎ ወደ መለያዎ ይግቡ።',
       email: 'ኢሜል አድራሻ',
       emailPlaceholder: 'የኢሜል አድራሻዎን ያስገቡ',
@@ -50,7 +50,7 @@ const Login = () => {
       registerHere: 'እዚህ ይመዝገቡ'
     },
     om: {
-      title: 'Qween Burgeritti Seenuu',
+      title: 'Queen Burgeritti Seenuu',
       welcomeBack: 'Baga nagaan deebitan! Seerii miira keessanii seenaa.',
       email: 'Imeeilii',
       emailPlaceholder: 'Imeeilii keessan galchaa',
@@ -99,7 +99,7 @@ const Login = () => {
     setGoogleLoading(true);
     const result = await googleLogin();
     setGoogleLoading(false);
-    
+
     if (result.success) {
       // Check if user is admin and redirect to admin dashboard
       if (result.user?.role === 'admin') {
@@ -116,8 +116,8 @@ const Login = () => {
       <div className="container mx-auto px-4">
         <div className="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden">
           <div className="px-6 py-8">
-            <div className="text-center mb-8">
-              <div className="text-5xl mb-4">🍔</div>
+            <div className="text-center mb-8 flex flex-col items-center">
+              <img src="/logo.png" alt="Queen Burger Logo" className="w-16 h-16 object-contain mb-4" />
               <h1 className="text-2xl font-bold text-gray-900">{t.title}</h1>
               <p className="text-gray-600 mt-2">{t.welcomeBack}</p>
             </div>

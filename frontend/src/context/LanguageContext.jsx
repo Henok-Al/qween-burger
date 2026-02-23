@@ -14,9 +14,9 @@ const en = {
   'navbar.logout': 'Logout',
   'navbar.profile': 'Profile',
   'navbar.orders': 'Orders',
-  
+
   // Home Page
-  'home.title': 'Welcome to Qween Burger',
+  'home.title': 'Welcome to Queen Burger',
   'home.subtitle': 'Delicious burgers delivered to your doorstep',
   'home.features.title': 'Why Choose Us?',
   'home.features.fast': 'Fast Delivery',
@@ -24,7 +24,7 @@ const en = {
   'home.features.quality': 'Premium Quality',
   'home.features.affordable': 'Affordable Prices',
   'home.cta': 'Explore Our Menu',
-  
+
   // Products Page
   'products.title': 'Our Products',
   'products.filter': 'Filter Products',
@@ -37,7 +37,7 @@ const en = {
   'products.category.beef': 'Beef',
   'products.category.special': 'Special',
   'products.viewAll': 'View All Products',
-  
+
   // Product Details
   'product.details': 'Product Details',
   'product.addToCart': 'Add to Cart',
@@ -49,7 +49,7 @@ const en = {
   'product.writeReview': 'Write a Review',
   'product.yourReview': 'Your Review',
   'product.submitReview': 'Submit Review',
-  
+
   // Cart
   'cart.title': 'Shopping Cart',
   'cart.empty': 'Your cart is empty',
@@ -58,19 +58,19 @@ const en = {
   'cart.subtotal': 'Subtotal',
   'cart.tax': 'Tax',
   'cart.total': 'Total',
-  
+
   // Checkout
   'checkout.title': 'Checkout',
   'checkout.shipping': 'Shipping Information',
   'checkout.payment': 'Payment Method',
   'checkout.notes': 'Notes',
   'checkout.placeOrder': 'Place Order',
-  
+
   // Orders
   'orders.title': 'My Orders',
   'orders.noOrders': 'No orders found',
   'orders.viewDetails': 'View Details',
-  
+
   // Order Details
   'order.details': 'Order Details',
   'order.items': 'Items',
@@ -79,7 +79,7 @@ const en = {
   'order.payment': 'Payment Status',
   'order.reorder': 'Reorder',
   'order.cancel': 'Cancel Order',
-  
+
   // Admin Dashboard
   'admin.dashboard': 'Admin Dashboard',
   'admin.stats.users': 'Total Users',
@@ -91,7 +91,7 @@ const en = {
   'admin.manageOrders': 'Manage Orders',
   'admin.manageUsers': 'Manage Users',
   'admin.monthlyStats': 'Monthly Statistics',
-  
+
   // Admin Products
   'admin.products.title': 'Product Management',
   'admin.products.add': 'Add Product',
@@ -102,13 +102,13 @@ const en = {
   'admin.products.delete': 'Delete',
   'admin.products.enable': 'Enable',
   'admin.products.disable': 'Disable',
-  
+
   // Admin Orders
   'admin.orders.title': 'Manage Orders',
   'admin.orders.filter': 'Filter by Status',
   'admin.orders.noOrders': 'No orders found',
   'admin.orders.viewDetails': 'View Details',
-  
+
   // Admin Users
   'admin.users.title': 'User Management',
   'admin.users.search': 'Search Users',
@@ -116,7 +116,7 @@ const en = {
   'admin.users.noUsers': 'No users found',
   'admin.users.edit': 'Edit',
   'admin.users.delete': 'Delete',
-  
+
   // Login/Register
   'auth.login': 'Login',
   'auth.register': 'Register',
@@ -130,13 +130,13 @@ const en = {
   'auth.resetPassword': 'Reset Password',
   'auth.sendReset': 'Send Reset Link',
   'auth.remember': 'Remember Me',
-  
+
   // Footer
   'footer.about': 'About Us',
   'footer.contact': 'Contact Us',
   'footer.follow': 'Follow Us',
-  'footer.copyright': '© 2024 Qween Burger. All rights reserved.',
-  
+  'footer.copyright': '© 2024 Queen Burger. All rights reserved.',
+
   // Common
   'common.price': 'Price',
   'common.stock': 'Stock',
@@ -164,9 +164,9 @@ const om = {
   'navbar.logout': 'Ba\'uu',
   'navbar.profile': 'Profaayilii',
   'navbar.orders': 'Ajajawwan',
-  
+
   // Home Page
-  'home.title': 'Qween Burgeritti Baga Nagaan Dhuftan',
+  'home.title': 'Queen Burgeritti Baga Nagaan Dhuftan',
   'home.subtitle': 'Burgeeroota mi\'aa ta\'an mana keessanitti isiniif geessina',
   'home.features.title': 'Maaliif Nu Filattaa?',
   'home.features.fast': 'Geessitaa Sanaa',
@@ -174,7 +174,7 @@ const om = {
   'home.features.quality': 'Safara Ol\'anaa',
   'home.features.affordable': 'Gatii Gahaa',
   'home.cta': 'Meenyuu Keenya Ilaalaa',
-  
+
   // Products Page
   'products.title': 'Oomisholee Keenya',
   'products.filter': 'Oomisholee Baasuu',
@@ -187,7 +187,7 @@ const om = {
   'products.category.beef': 'Hanga',
   'products.category.special': 'Addaa',
   'products.viewAll': 'Oomisholee Hunda Ilaalaa',
-  
+
   // Product Details
   'product.details': 'Bal\'ina Oomishaa',
   'product.addToCart': 'Karaa Isa Kaaraa',
@@ -199,7 +199,7 @@ const om = {
   'product.writeReview': 'Yaadannoo Barreessaa',
   'product.yourReview': 'Yaadannoo Keessan',
   'product.submitReview': 'Yaadannoo Ergaa',
-  
+
   // Cart
   'cart.title': 'Kaaraa Bituu',
   'cart.empty': 'Kaaraan keessan duwwaa dha',
@@ -208,19 +208,19 @@ const om = {
   'cart.subtotal': 'Walduraa duubaan',
   'cart.tax': 'Bal\'ina',
   'cart.total': 'Waliigalaa',
-  
+
   // Checkout
   'checkout.title': 'Kaffaltii',
   'checkout.shipping': 'Odeeffannoo Geessitaa',
   'checkout.payment': 'Malaa Kaffaltii',
   'checkout.notes': 'Yaadannoowwan',
   'checkout.placeOrder': 'Ajaja Eeggaa',
-  
+
   // Orders
   'orders.title': 'Ajajawwan Koo',
   'orders.noOrders': 'Ajajawwan hin argamane',
   'orders.viewDetails': 'Bal\'ina Ilaalaa',
-  
+
   // Order Details
   'order.details': 'Bal\'ina Ajajaa',
   'order.items': 'Wantoota',
@@ -229,7 +229,7 @@ const om = {
   'order.payment': 'Haala Kaffaltii',
   'order.reorder': 'Irra Deebi\'uu',
   'order.cancel': 'Ajajaa Haquu',
-  
+
   // Admin Dashboard
   'admin.dashboard': 'Daashboordii Bulchaa',
   'admin.stats.users': 'Fayyadamtoota Waliigalaa',
@@ -241,7 +241,7 @@ const om = {
   'admin.manageOrders': 'Ajajawwan Bulchuu',
   'admin.manageUsers': 'Fayyadamtoota Bulchuu',
   'admin.monthlyStats': 'Ibsa Ji\'aa',
-  
+
   // Admin Products
   'admin.products.title': 'Bulchiinsa Oomishaa',
   'admin.products.add': 'Oomishaa Id\'uu',
@@ -252,13 +252,13 @@ const om = {
   'admin.products.delete': 'Haquu',
   'admin.products.enable': 'Dandeessisuu',
   'admin.products.disable': 'Dandeessisuu Dhaabuu',
-  
+
   // Admin Orders
   'admin.orders.title': 'Ajajawwan Bulchuu',
   'admin.orders.filter': 'Haala Baasuu',
   'admin.orders.noOrders': 'Ajajawwan hin argamane',
   'admin.orders.viewDetails': 'Bal\'ina Ilaalaa',
-  
+
   // Admin Users
   'admin.users.title': 'Bulchiinsa Fayyadamaa',
   'admin.users.search': 'Fayyadamtoota Barbaaduu',
@@ -266,7 +266,7 @@ const om = {
   'admin.users.noUsers': 'Fayyadamtoota hin argamane',
   'admin.users.edit': 'Gulaaluu',
   'admin.users.delete': 'Haquu',
-  
+
   // Login/Register
   'auth.login': 'Seenuu',
   'auth.register': 'Galmeessuu',
@@ -280,13 +280,13 @@ const om = {
   'auth.resetPassword': 'Jecha Iccitii Haaromuu',
   'auth.sendReset': 'Linkii Haaromuu Ergaa',
   'auth.remember': 'Na Yaadadhaa',
-  
+
   // Footer
   'footer.about': 'Waa\'ii Keenya',
   'footer.contact': 'Nu Quunnamaa',
   'footer.follow': 'Nu Hordofaa',
-  'footer.copyright': '© 2024 Qween Burger. Haqa hundi eegama.',
-  
+  'footer.copyright': '© 2024 Queen Burger. Haqa hundi eegama.',
+
   // Common
   'common.price': 'Gatii',
   'common.stock': 'Kuusaa',
@@ -314,7 +314,7 @@ const am = {
   'navbar.logout': 'መውጣት',
   'navbar.profile': 'ሴክሊንግ',
   'navbar.orders': 'የትከላላ ወረቀት',
-  
+
   // Home Page
   'home.title': 'ኳዊን በርገር እንኳን ደህና መጡ',
   'home.subtitle': 'ምንጨዩ በርገሮች በትከላላ ወረቀትዎ ላይ ይላካሉ',
@@ -324,7 +324,7 @@ const am = {
   'home.features.quality': 'ከፍተኛ ደረጃ',
   'home.features.affordable': 'ጥቅምጥራዊ ዋጋዎች',
   'home.cta': 'የምናለውን ዘንዴ እንዴት እንደምንም',
-  
+
   // Products Page
   'products.title': 'የእኛምምርቶች',
   'products.filter': 'ምርቶችን ይጠኑ',
@@ -337,7 +337,7 @@ const am = {
   'products.category.beef': 'በፍ',
   'products.category.special': 'ስፔሻል',
   'products.viewAll': 'ሁሉንም ምርቶች ይመልከቱ',
-  
+
   // Product Details
   'product.details': 'የምርት ዝርዝር',
   'product.addToCart': ' ወደ ሻንጉት አስገባ',
@@ -349,7 +349,7 @@ const am = {
   'product.writeReview': 'አንድ ምከራተያ ይጻፈው',
   'product.yourReview': 'የእርስዎ ምከራተያ',
   'product.submitReview': 'ምከራተያ ይላከው',
-  
+
   // Cart
   'cart.title': 'የሻንጉት ገነት',
   'cart.empty': 'የእርስዎ ሻንጉት ባዶ ነው',
@@ -358,19 +358,19 @@ const am = {
   'cart.subtotal': 'አጠቃላይ',
   'cart.tax': 'ጡታ',
   'cart.total': 'ጠቅላላ',
-  
+
   // Checkout
   'checkout.title': 'ይቀጥላል',
   'checkout.shipping': 'የአቅራቢያ አይነት',
   'checkout.payment': 'የክፍያ አይነት',
   'checkout.notes': 'ማስታወሻዎች',
   'checkout.placeOrder': 'የትከላላ ወረቀት ይጫኑ',
-  
+
   // Orders
   'orders.title': 'የእኛም የትከላላ ወረቀት',
   'orders.noOrders': 'ምንም የትከላላ ወረቀት አልተገኘም',
   'orders.viewDetails': 'ዝርዝር ይመልከቱ',
-  
+
   // Order Details
   'order.details': 'የትከላላ ወረቀት ዝርዝር',
   'order.items': 'የትከላላ ወረቀት አይነት',
@@ -379,7 +379,7 @@ const am = {
   'order.payment': 'የክፍያ አይነት',
   'order.reorder': 'ድጋሚ ያገዛል',
   'order.cancel': 'የትከላላ ወረቀት ይቀጥላል',
-  
+
   // Admin Dashboard
   'admin.dashboard': 'የአዳሚንዳዊ ዳሽბోరድ',
   'admin.stats.users': 'ጠቅላላ ተጠቃሚዎች',
@@ -391,7 +391,7 @@ const am = {
   'admin.manageOrders': 'የትከላላ ወረቀትን ይጠቀምላል',
   'admin.manageUsers': 'ተጠቃሚዎችን ይጠቀምላል',
   'admin.monthlyStats': 'የወር አይነት የተጫኔ አይነት',
-  
+
   // Admin Products
   'admin.products.title': 'የምርት አስተዳዳሪነት',
   'admin.products.add': 'ምርት አከልተው',
@@ -402,13 +402,13 @@ const am = {
   'admin.products.delete': 'ይሰረዝ',
   'admin.products.enable': 'ይሰረዝ',
   'admin.products.disable': 'ይሰረዝ',
-  
+
   // Admin Orders
   'admin.orders.title': 'የትከላላ ወረቀት አስተዳዳሪነት',
   'admin.orders.filter': 'በዓይነት ይጠኑ',
   'admin.orders.noOrders': 'ምንም የትከላላ ወረቀት አልተገኘም',
   'admin.orders.viewDetails': 'ዝርዝር ይመልከቱ',
-  
+
   // Admin Users
   'admin.users.title': 'ተጠቃሚ አስተዳዳሪነት',
   'admin.users.search': 'ተጠቃሚዎችን ይፈልጉ',
@@ -416,7 +416,7 @@ const am = {
   'admin.users.noUsers': 'ምንም ተጠቃሚ አልተገኘም',
   'admin.users.edit': 'ይጠቀምላል',
   'admin.users.delete': 'ይሰረዝ',
-  
+
   // Login/Register
   'auth.login': 'መግቢያ',
   'auth.register': 'መዝግብ',
@@ -430,13 +430,13 @@ const am = {
   'auth.resetPassword': 'የይለፍ ቃልን ይቀይርዎት',
   'auth.sendReset': 'የቀይር ቃልን ይላከው',
   'auth.remember': 'አስታውስከው',
-  
+
   // Footer
   'footer.about': 'ስለ እኛ',
   'footer.contact': 'ያግኛልን',
   'footer.follow': 'ከእኛ ጋር ይቀጥላል',
-  'footer.copyright': '© 2024 Qween Burger. ሁሉንም መብት ይጠበቀላል.',
-  
+  'footer.copyright': '© 2024 Queen Burger. ሁሉንም መብት ይጠበቀላል.',
+
   // Common
   'common.price': 'ዋጋ',
   'common.stock': 'አካል',

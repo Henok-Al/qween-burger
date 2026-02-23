@@ -45,7 +45,7 @@ const ProductDetails = () => {
 
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!isAuthenticated) {
       setReviewError('Please log in to submit a review');
       return;
@@ -145,16 +145,15 @@ const ProductDetails = () => {
             <div className="mb-4">
               <div className="text-sm text-gray-500 mb-2">{product.category}</div>
               <h1 className="text-2xl font-bold mb-2">{product.name}</h1>
-              
+
               {product.ratings > 0 && (
                 <div className="flex items-center mb-4">
                   <div className="flex items-center space-x-1">
                     {[1, 2, 3, 4, 5].map((star) => (
                       <i
                         key={star}
-                        className={`fas fa-star text-yellow-500 ${
-                          star <= product.ratings ? 'text-yellow-500' : 'text-gray-300'
-                        }`}
+                        className={`fas fa-star text-yellow-500 ${star <= product.ratings ? 'text-yellow-500' : 'text-gray-300'
+                          }`}
                       ></i>
                     ))}
                   </div>
@@ -231,9 +230,9 @@ const ProductDetails = () => {
                 <button
                   onClick={decrementQuantity}
                   disabled={quantity <= 1}
-                  className="w-10 h-10 flex items-center justify-center border border-gray-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors"
+                  className="w-10 h-10 flex items-center justify-center bg-primary text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary/90 transition-colors font-bold text-lg"
                 >
-                  <i className="fas fa-minus"></i>
+                  −
                 </button>
                 <input
                   type="number"
@@ -241,14 +240,14 @@ const ProductDetails = () => {
                   onChange={handleQuantityChange}
                   min="1"
                   max="10"
-                  className="w-20 px-4 py-2 text-center border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-20 px-4 py-2 text-center border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-lg font-semibold"
                 />
                 <button
                   onClick={incrementQuantity}
                   disabled={quantity >= 10}
-                  className="w-10 h-10 flex items-center justify-center border border-gray-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors"
+                  className="w-10 h-10 flex items-center justify-center bg-primary text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary/90 transition-colors font-bold text-lg"
                 >
-                  <i className="fas fa-plus"></i>
+                  +
                 </button>
               </div>
             </div>
@@ -277,23 +276,23 @@ const ProductDetails = () => {
         <div className="mt-16">
           <div className="bg-white rounded-lg shadow-md p-6">
             <h2 className="text-2xl font-bold mb-6">Reviews ({product.numReviews})</h2>
-            
+
             {/* Write a Review */}
             <div className="mb-8 p-4 bg-gray-50 rounded-lg">
               <h3 className="text-lg font-semibold mb-4">Write a Review</h3>
-              
+
               {reviewError && (
                 <div className="mb-4 p-3 bg-red-50 text-red-600 rounded-lg">
                   {reviewError}
                 </div>
               )}
-              
+
               {reviewSuccess && (
                 <div className="mb-4 p-3 bg-green-50 text-green-600 rounded-lg">
                   {reviewSuccess}
                 </div>
               )}
-              
+
               {!isAuthenticated ? (
                 <div className="p-4 text-center">
                   <p className="mb-4">Please log in to write a review</p>
@@ -317,15 +316,14 @@ const ProductDetails = () => {
                           className="text-yellow-500 hover:text-yellow-600 transition-colors"
                         >
                           <i
-                            className={`fas fa-star ${
-                              star <= reviewRating ? 'text-yellow-500' : 'text-gray-300'
-                            }`}
+                            className={`fas fa-star ${star <= reviewRating ? 'text-yellow-500' : 'text-gray-300'
+                              }`}
                           ></i>
                         </button>
                       ))}
                     </div>
                   </div>
-                  
+
                   <div>
                     <label className="block text-sm font-medium mb-2">Comment</label>
                     <textarea
@@ -340,7 +338,7 @@ const ProductDetails = () => {
                       {reviewComment.length} / 500 characters
                     </div>
                   </div>
-                  
+
                   <button
                     type="submit"
                     disabled={submittingReview}
@@ -361,7 +359,7 @@ const ProductDetails = () => {
                 </form>
               )}
             </div>
-            
+
             {/* Existing Reviews */}
             {product.reviews && product.reviews.length > 0 ? (
               <div className="space-y-6">
@@ -374,9 +372,8 @@ const ProductDetails = () => {
                           {[1, 2, 3, 4, 5].map((star) => (
                             <i
                               key={star}
-                              className={`fas fa-star text-yellow-500 ${
-                                star <= review.rating ? 'text-yellow-500' : 'text-gray-300'
-                              }`}
+                              className={`fas fa-star text-yellow-500 ${star <= review.rating ? 'text-yellow-500' : 'text-gray-300'
+                                }`}
                             ></i>
                           ))}
                         </div>

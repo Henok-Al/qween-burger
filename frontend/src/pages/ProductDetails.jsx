@@ -152,8 +152,7 @@ const ProductDetails = () => {
                     {[1, 2, 3, 4, 5].map((star) => (
                       <i
                         key={star}
-                        className={`fas fa-star text-yellow-500 {star <= product.ratings ? 'text-yellow-500' : 'text-gray-300'
-                          }`}
+                        className={`fas fa-star ${star <= product.ratings ? 'text-yellow-500' : 'text-gray-300'}`}
                       ></i>
                     ))}
                   </div>
@@ -316,8 +315,7 @@ const ProductDetails = () => {
                           className="text-yellow-500 hover:text-yellow-600 transition-colors"
                         >
                           <i
-                            className={`fas fa-star {star <= reviewRating ? 'text-yellow-500' : 'text-gray-300'
-                              }`}
+                            className={`fas fa-star ${star <= reviewRating ? 'text-yellow-500' : 'text-gray-300'}`}
                           ></i>
                         </button>
                       ))}
@@ -372,8 +370,7 @@ const ProductDetails = () => {
                           {[1, 2, 3, 4, 5].map((star) => (
                             <i
                               key={star}
-                              className={`fas fa-star text-yellow-500 {star <= review.rating ? 'text-yellow-500' : 'text-gray-300'
-                                }`}
+                              className={`fas fa-star ${star <= review.rating ? 'text-yellow-500' : 'text-gray-300'}`}
                             ></i>
                           ))}
                         </div>

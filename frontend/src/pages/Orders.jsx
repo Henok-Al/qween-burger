@@ -226,7 +226,7 @@ const Orders = () => {
                             {item.product?.name || 'Deleted Product'} x{item.quantity}
                           </span>
                           <span className="font-medium">
-                            ${((item.product?.price || 0) * item.quantity).toFixed(2)}
+                            ETB {((item.product?.price || 0) * item.quantity).toFixed(2)}
                           </span>
                         </div>
                       ))}
@@ -237,7 +237,7 @@ const Orders = () => {
                     <div>
                       <div className="text-sm text-gray-500">Total Amount</div>
                       <div className="text-xl font-bold text-primary">
-                        ${order.totalAmount.toFixed(2)}
+                        ETB {order.totalAmount.toFixed(2)}
                       </div>
                     </div>
                     <div className="flex flex-wrap gap-2">

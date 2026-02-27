@@ -78,7 +78,7 @@ const Cart = () => {
                               {item.product.name}
                             </h3>
                             <div className="text-sm text-gray-500 mb-2">
-                              ${item.product.price.toFixed(2)} each
+                              ETB {item.product.price.toFixed(2)} each
                             </div>
                           </div>
                           <button
@@ -118,7 +118,7 @@ const Cart = () => {
                           </div>
 
                           <div className="ml-auto font-semibold text-lg">
-                            ${(item.product.price * item.quantity).toFixed(2)}
+                            ETB {(item.product.price * item.quantity).toFixed(2)}
                           </div>
                         </div>
                       </div>
@@ -162,7 +162,7 @@ const Cart = () => {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Subtotal</span>
-                    <span className="font-medium">${totalPrice.toFixed(2)}</span>
+                    <span className="font-medium">ETB {totalPrice.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Shipping</span>
@@ -170,7 +170,7 @@ const Cart = () => {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Tax</span>
-                    <span className="font-medium">${(totalPrice * 0.08).toFixed(2)}</span>
+                    <span className="font-medium">ETB {(totalPrice * 0.08).toFixed(2)}</span>
                   </div>
                 </div>
 
@@ -178,7 +178,7 @@ const Cart = () => {
                   <div className="flex justify-between text-xl font-bold">
                     <span>Total</span>
                     <span className="text-primary">
-                      ${(totalPrice * 1.08).toFixed(2)}
+                      ETB {(totalPrice * 1.08).toFixed(2)}
                     </span>
                   </div>
                   <div className="text-sm text-gray-500 mt-1">
@@ -197,7 +197,7 @@ const Cart = () => {
                 <div className="mt-4 p-3 bg-gray-50 rounded-lg text-sm text-gray-600">
                   <div className="flex items-center">
                     <i className="fas fa-shipping-fast mr-2 text-primary"></i>
-                    <span>Free shipping on orders over $50</span>
+                    <span>Free shipping on orders over ETB 50</span>
                   </div>
                 </div>
 

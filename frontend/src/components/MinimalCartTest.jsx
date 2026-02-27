@@ -48,7 +48,7 @@ const MinimalCartTest = () => {
         Add Test Product
       </button>
       <div style={{ marginTop: '10px' }}>
-        Items: {items.length} - Total Price: ${totalPrice.toFixed(2)}
+        Items: {items.length} - Total Price: ETB {totalPrice.toFixed(2)}
       </div>
       <div style={{ marginTop: '10px', fontSize: '12px' }}>
         {JSON.stringify(items)}

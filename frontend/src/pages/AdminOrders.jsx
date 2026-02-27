@@ -213,7 +213,7 @@ const AdminOrders = () => {
                     <div className="text-right">
                       <div className="text-sm text-gray-500 mb-1">Total</div>
                       <div className="text-xl font-bold text-primary">
-                        ${order.totalAmount.toFixed(2)}
+                        ETB {order.totalAmount.toFixed(2)}
                       </div>
                     </div>
                   </div>

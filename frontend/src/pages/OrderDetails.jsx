@@ -315,11 +315,11 @@ const OrderDetails = () => {
                           <div>
                             <h5 className="font-semibold mb-1">{item.product?.name || 'Unknown Product'}</h5>
                             <div className="text-sm text-gray-500">
-                              ${(item.product?.price || item.price || 0).toFixed(2)} each
+                              ETB {(item.product?.price || item.price || 0).toFixed(2)} each
                             </div>
                           </div>
                           <div className="font-semibold">
-                            ${((item.product?.price || item.price || 0) * item.quantity).toFixed(2)}
+                            ETB {((item.product?.price || item.price || 0) * item.quantity).toFixed(2)}
                           </div>
                         </div>
 
@@ -339,7 +339,7 @@ const OrderDetails = () => {
                 <div className="space-y-3">
                   <div className="flex justify-between">
                     <span className="text-gray-600">Subtotal</span>
-                    <span className="font-medium">${(order.totalAmount || 0).toFixed(2)}</span>
+                    <span className="font-medium">ETB {(order.totalAmount || 0).toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Shipping</span>
@@ -347,11 +347,11 @@ const OrderDetails = () => {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Tax</span>
-                    <span className="font-medium">${((order.totalAmount || 0) * 0.08).toFixed(2)}</span>
+                    <span className="font-medium">ETB {((order.totalAmount || 0) * 0.08).toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between text-xl font-bold text-primary">
                     <span>Total</span>
-                    <span>${((order.totalAmount || 0) * 1.08).toFixed(2)}</span>
+                    <span>ETB {((order.totalAmount || 0) * 1.08).toFixed(2)}</span>
                   </div>
                 </div>
               </div>

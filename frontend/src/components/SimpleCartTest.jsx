@@ -22,7 +22,7 @@ const SimpleCartTest = () => {
       </div>
       <div className="mb-4">
         <p className="font-medium">Total Price:</p>
-        <p>${cartContext?.totalPrice?.toFixed(2)}</p>
+        <p>ETB {cartContext?.totalPrice?.toFixed(2)}</p>
       </div>
       <button 
         onClick={(e) => {

@@ -102,7 +102,7 @@ const AdminDashboard = () => {
               </div>
               <div>
                 <p className="text-sm text-gray-500 mb-1">Total Revenue</p>
-                <p className="text-3xl font-bold text-gray-800">${stats.totalRevenue.toFixed(2)}</p>
+                <p className="text-3xl font-bold text-gray-800">ETB {stats.totalRevenue.toFixed(2)}</p>
               </div>
             </div>
           </div>
@@ -225,8 +225,8 @@ const AdminDashboard = () => {
                       <tr key={index} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
                         <td className="py-3 px-4 font-medium text-gray-800">{stat._id}</td>
                         <td className="py-3 px-4 text-gray-700">{stat.orders}</td>
-                        <td className="py-3 px-4 text-gray-700">${stat.revenue.toFixed(2)}</td>
-                        <td className="py-3 px-4 text-gray-700">${avgOrderValue.toFixed(2)}</td>
+                        <td className="py-3 px-4 text-gray-700">ETB {stat.revenue.toFixed(2)}</td>
+                        <td className="py-3 px-4 text-gray-700">ETB {avgOrderValue.toFixed(2)}</td>
                       </tr>
                     );
                   })}

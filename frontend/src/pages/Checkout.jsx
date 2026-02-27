@@ -391,7 +391,7 @@ const Checkout = () => {
                       <span className="font-medium">{item.product.name}</span>
                       <span className="text-gray-500 ml-2">x{item.quantity}</span>
                     </div>
-                    <span>${(item.product.price * item.quantity).toFixed(2)}</span>
+                    <span>ETB {(item.product.price * item.quantity).toFixed(2)}</span>
                   </div>
                 ))}
               </div>
@@ -399,7 +399,7 @@ const Checkout = () => {
               <div className="space-y-3 mb-6">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Subtotal</span>
-                  <span className="font-medium">${totalPrice.toFixed(2)}</span>
+                  <span className="font-medium">ETB {totalPrice.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Shipping</span>
@@ -407,7 +407,7 @@ const Checkout = () => {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Tax</span>
-                  <span className="font-medium">${(totalPrice * 0.08).toFixed(2)}</span>
+                  <span className="font-medium">ETB {(totalPrice * 0.08).toFixed(2)}</span>
                 </div>
               </div>
 
@@ -415,7 +415,7 @@ const Checkout = () => {
                 <div className="flex justify-between text-xl font-bold">
                   <span>Total</span>
                   <span className="text-primary">
-                    ${(totalPrice * 1.08).toFixed(2)}
+                    ETB {(totalPrice * 1.08).toFixed(2)}
                   </span>
                 </div>
                 <div className="text-sm text-gray-500 mt-1">
@@ -426,7 +426,7 @@ const Checkout = () => {
               <div className="p-3 bg-gray-50 rounded-lg text-sm text-gray-600 mb-4">
                 <div className="flex items-center">
                   <i className="fas fa-shipping-fast mr-2 text-primary"></i>
-                  <span>Free shipping on orders over $50</span>
+                  <span>Free shipping on orders over ETB 50</span>
                 </div>
               </div>
 

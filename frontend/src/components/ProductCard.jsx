@@ -43,7 +43,7 @@ const ProductCard = ({ product }) => {
       <div className="p-4">
         <div className="flex justify-between items-start mb-2">
           <div className="text-sm text-gray-500">{product.category}</div>
-          <div className="text-lg font-bold text-primary">${product.price.toFixed(2)}</div>
+          <div className="text-lg font-bold text-primary">ETB {product.price.toFixed(2)}</div>
         </div>
         
         <Link to={`/products/${product._id}`}>

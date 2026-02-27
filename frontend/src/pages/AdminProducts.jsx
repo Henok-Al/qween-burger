@@ -171,7 +171,7 @@ const AdminProducts = () => {
                     </div>
                     <div className="text-right">
                       <div className="text-sm text-gray-500 mb-1">Price</div>
-                      <div className="text-xl font-bold text-primary">${product.price.toFixed(2)}</div>
+                      <div className="text-xl font-bold text-primary">ETB {product.price.toFixed(2)}</div>
                     </div>
                   </div>
                   

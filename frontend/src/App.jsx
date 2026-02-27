@@ -60,7 +60,7 @@ const CartTest = () => {
       <div className="mb-4">
         <p className="font-medium">Items: {items.length}</p>
         <p className="font-medium">Total Items: {totalItems}</p>
-        <p className="font-medium">Total Price: ${totalPrice.toFixed(2)}</p>
+        <p className="font-medium">Total Price: ETB {totalPrice.toFixed(2)}</p>
       </div>
       <div className="text-sm">
         <p>Items: {JSON.stringify(items)}</p>

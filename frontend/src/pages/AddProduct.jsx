@@ -267,7 +267,7 @@ const AddProduct = () => {
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Price ($) <span className="text-red-500">*</span>
+                        Price (ETB) <span className="text-red-500">*</span>
                       </label>
                       <input
                         type="number"

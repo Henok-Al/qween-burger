@@ -152,7 +152,7 @@ const ProductDetails = () => {
                     {[1, 2, 3, 4, 5].map((star) => (
                       <i
                         key={star}
-                        className={`fas fa-star text-yellow-500 ${star <= product.ratings ? 'text-yellow-500' : 'text-gray-300'
+                        className={`fas fa-star text-yellow-500 {star <= product.ratings ? 'text-yellow-500' : 'text-gray-300'
                           }`}
                       ></i>
                     ))}
@@ -165,7 +165,7 @@ const ProductDetails = () => {
             </div>
 
             <div className="mb-6">
-              <div className="text-3xl font-bold text-primary mb-2">${product.price.toFixed(2)}</div>
+              <div className="text-3xl font-bold text-primary mb-2">ETB {product.price.toFixed(2)}</div>
               {product.stock > 0 ? (
                 <div className="flex items-center space-x-2 text-green-600">
                   <i className="fas fa-check-circle"></i>
@@ -316,7 +316,7 @@ const ProductDetails = () => {
                           className="text-yellow-500 hover:text-yellow-600 transition-colors"
                         >
                           <i
-                            className={`fas fa-star ${star <= reviewRating ? 'text-yellow-500' : 'text-gray-300'
+                            className={`fas fa-star {star <= reviewRating ? 'text-yellow-500' : 'text-gray-300'
                               }`}
                           ></i>
                         </button>
@@ -372,7 +372,7 @@ const ProductDetails = () => {
                           {[1, 2, 3, 4, 5].map((star) => (
                             <i
                               key={star}
-                              className={`fas fa-star text-yellow-500 ${star <= review.rating ? 'text-yellow-500' : 'text-gray-300'
+                              className={`fas fa-star text-yellow-500 {star <= review.rating ? 'text-yellow-500' : 'text-gray-300'
                                 }`}
                             ></i>
                           ))}
